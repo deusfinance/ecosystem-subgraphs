@@ -3,6 +3,7 @@
   "private": true,
   "license": "MIT",
   "version": "1.0.0",
+  "author": "dSynths",
   "scripts": {
     "codegen": "graph codegen --output-dir ./generated/",
     "build": "graph build",

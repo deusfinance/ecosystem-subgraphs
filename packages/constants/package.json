@@ -4,6 +4,7 @@
   "description": "constants",
   "license": "MIT",
   "private": true,
+  "author": "dSynths",
   "main": "index.ts",
   "scripts": {
     "codegen": " ",
