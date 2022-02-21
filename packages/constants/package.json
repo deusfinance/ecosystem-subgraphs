@@ -1,0 +1,13 @@
+{
+  "name": "const",
+  "version": "1.0.0",
+  "description": "constants",
+  "license": "MIT",
+  "private": true,
+  "main": "index.ts",
+  "scripts": {
+    "codegen": " ",
+    "build": " ",
+    "prepare:fantom": "mustache ../../config/fantom.json index.template.ts > index.ts"
+  }
+}

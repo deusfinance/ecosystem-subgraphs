@@ -1,0 +1,103 @@
+specVersion: 0.0.4
+description: Trade stocks and commodities in a decentralized fashion. No KYC - No Signup.
+repository: https://github.com/dsynths/dsynths-subgraphs
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Synchronizer
+    network: '{{ network }}'
+    source:
+      address: '{{ synchronizerAddress }}'
+      abi: Synchronizer
+      startBlock: {{synchronizerStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mapping.ts
+      entities:
+        - Registrar
+        - Transaction
+        - Synchronizer
+        - Partner
+        - UserBalanceSnapshot
+      abis:
+        - name: Synchronizer
+          file: ./abis/Synchronizer.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: Buy(address,address,address,uint256,uint256,uint256,uint256)
+          handler: handleBuy
+        - event: Sell(address,address,address,uint256,uint256,uint256,uint256)
+          handler: handleSell
+        - event: WithdrawFee(address,uint256,uint256,uint256)
+          handler: handleWithdrawFee
+  - kind: ethereum/contract
+    name: Conductor
+    network: {{network}}
+    source:
+      address: '{{ conductorAddress }}'
+      abi: Conductor
+      startBlock: {{conductorStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mapping.ts
+      entities:
+        - Registrar
+      abis:
+        - name: Registrar
+          file: ./abis/Registrar.json
+        - name: Conductor
+          file: ./abis/Conductor.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: Conducted(string,address,address)
+          handler: handleConduct
+        - event: Liquidated(address,address)
+          handler: handleLiquidate
+  - kind: ethereum/contract
+    name: PartnerManager
+    network: {{network}}
+    source:
+      address: '{{ partnerManagerAddress }}'
+      abi: PartnerManager
+      startBlock: {{partnerManagerStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mapping.ts
+      entities:
+        - Partner
+      abis:
+        - name: PartnerManager
+          file: ./abis/PartnerManager.json
+      eventHandlers:
+        - event: PartnerAdded(address,uint256[3])
+          handler: handlePartnerAdded
+templates:
+  - name: Registrar
+    kind: ethereum/contract
+    network: {{network}}
+    source:
+      abi: ERC20
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mapping.ts
+      entities:
+        - User
+      abis:
+        - name: Registrar
+          file: ./abis/Registrar.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleRegistrarTransfer

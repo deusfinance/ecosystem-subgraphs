@@ -1,0 +1,55 @@
+type Registrar @entity {
+  id: ID!
+  name: String!
+  ticker: String!
+  symbol: String!
+  version: String!
+  type: String!
+  liquidated: Boolean!
+  quoteVolume: BigDecimal!
+  paidFees: BigDecimal!
+  transactions: [Transaction!]! @derivedFrom(field: "registrar")
+}
+
+type Synchronizer @entity {
+  id: ID!
+  totalVolumeDEI: BigDecimal!
+  registrarCount: Int!
+  txCount: BigInt!
+  daoFees: BigDecimal!
+  partnerFees: BigDecimal!
+}
+
+type Partner @entity {
+  id: ID!
+  stockFee: BigDecimal!
+  cryptoFee: BigDecimal!
+  forexFee: BigDecimal!
+  cumulativeFees: BigDecimal!
+  claimableFees: BigDecimal!
+  transactions: [Transaction!]! @derivedFrom(field: "partner")
+}
+
+type Transaction @entity {
+  id: ID!
+  timestamp: BigInt!
+  block: BigInt!
+  method: String!
+  from: Bytes!
+  to: Bytes!
+  registrar: Registrar!
+  price: BigDecimal!
+  amountIn: BigDecimal!
+  amountOut: BigDecimal!
+  partner: Partner!
+  daoFee: BigDecimal!
+  partnerFee: BigDecimal!
+}
+
+type UserBalanceSnapshot @entity {
+  id: ID!
+  user: Bytes!
+  timestamp: BigInt!
+  registrar: Registrar!
+  amount: BigDecimal!
+}
