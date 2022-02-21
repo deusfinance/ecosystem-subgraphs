@@ -39,7 +39,7 @@ export function updateGlobalData(tx: Transaction): void {
   let dao = Partner.load(PLATFORM_ADDRESS.toHexString())
   if (dao) {
     dao.cumulativeFees = dao.cumulativeFees.plus(tx.daoFee)
-    dao.claimableFees = dao.claimableFees.plus(tx.partnerFee)
+    dao.claimableFees = dao.claimableFees.plus(tx.daoFee)
     dao.save()
   }
 }
