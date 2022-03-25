@@ -52,7 +52,7 @@ export function handleBuy(event: BuyEvent): void {
     event.params.price,
     event.params.feeAmount
   )
-  updateGlobalData(tx)
+  updateGlobalData(tx, event)
   createSnapshotOnTransaction(tx)
 }
 
@@ -67,7 +67,7 @@ export function handleSell(event: SellEvent): void {
     event.params.price,
     event.params.feeAmount
   )
-  updateGlobalData(tx)
+  updateGlobalData(tx, event)
   createSnapshotOnTransaction(tx)
 }
 

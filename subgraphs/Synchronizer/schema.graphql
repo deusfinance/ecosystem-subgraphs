@@ -1,3 +1,6 @@
+#####################################
+############# REGISTRARS ############
+#####################################
 type Registrar @entity {
   id: ID!
   name: String!
@@ -9,7 +12,20 @@ type Registrar @entity {
   quoteVolume: BigDecimal!
   paidFees: BigDecimal!
   transactions: [Transaction!]! @derivedFrom(field: "registrar")
+  dayData: [RegistrarDayData!]! @derivedFrom(field: "registrar")
 }
+
+type RegistrarDayData @entity {
+  id: ID! # timestamp / 86400, floored
+  date: Int!
+  registrar: Registrar!
+  volumeDEI: BigDecimal!
+  txCount: BigInt!
+}
+
+#####################################
+########### SYNCHRONIZER ############
+#####################################
 
 type Synchronizer @entity {
   id: ID!
@@ -18,13 +34,29 @@ type Synchronizer @entity {
   txCount: BigInt!
   daoFees: BigDecimal!
   partnerFees: BigDecimal!
+  dayData: [SynchronizerDayData!]! @derivedFrom(field: "synchronizer")
 }
+
+type SynchronizerDayData @entity {
+  id: ID! # timestamp / 86400, floored
+  date: Int!
+  synchronizer: Synchronizer!
+  volumeDEI: BigDecimal!
+  txCount: BigInt!
+}
+
+#####################################
+############### MISC ################
+#####################################
 
 type Partner @entity {
   id: ID!
   stockFee: BigDecimal!
   cryptoFee: BigDecimal!
   forexFee: BigDecimal!
+  stockVolumeDEI: BigDecimal!
+  cryptoVolumeDEI: BigDecimal!
+  forexVolumeDEI: BigDecimal!
   cumulativeFees: BigDecimal!
   claimableFees: BigDecimal!
   transactions: [Transaction!]! @derivedFrom(field: "partner")

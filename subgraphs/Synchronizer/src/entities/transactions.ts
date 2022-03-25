@@ -2,8 +2,8 @@ import {Address, BigInt, BigDecimal, ethereum} from '@graphprotocol/graph-ts'
 
 import {Synchronizer as ISynchronizer} from '../../generated/Synchronizer/Synchronizer'
 import {Partner, Registrar, Transaction} from '../../generated/schema'
-import {convertAmountToDecimal, getAction} from '../helpers'
 import {BIG_DECIMAL_ZERO, PLATFORM_ADDRESS, SCALE, SYNCHRONIZER_ADDRESS} from 'const'
+import {convertAmountToDecimal, getAction, getPartnerFee} from '../helpers'
 
 export function createTransaction(
   event: ethereum.Event,
@@ -50,20 +50,6 @@ function getFeeShare(feeAmount: BigDecimal, fee: BigDecimal, feeSibling: BigDeci
   const totalFee = fee.plus(feeSibling)
   if (fee.equals(BIG_DECIMAL_ZERO) || totalFee.equals(BIG_DECIMAL_ZERO)) return BIG_DECIMAL_ZERO
   return fee.div(totalFee).times(feeAmount)
-}
-
-function getPartnerFee(partner: Partner, type: string): BigDecimal {
-  if (type === 'stock') {
-    return partner.stockFee
-  }
-  if (type === 'crypto') {
-    return partner.cryptoFee
-  }
-  if (type === 'forex') {
-    return partner.forexFee
-  }
-  // needs fixing
-  return partner.stockFee
 }
 
 function getAmountOut(
