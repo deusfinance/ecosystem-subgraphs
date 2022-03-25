@@ -62,7 +62,9 @@ export function updateGlobalData(tx: Transaction, event: ethereum.Event): void {
   // daily synchronizer data
   let synchronizerDayData = getSynchronizerDayData(event)
   synchronizerDayData.volumeDEI = synchronizerDayData.volumeDEI.plus(quoteAmount)
+  synchronizerDayData.totalVolumeDEI = synchronizer.totalVolumeDEI
   synchronizerDayData.txCount = synchronizerDayData.txCount.plus(BIG_INT_ONE)
+  synchronizerDayData.totalTxCount = synchronizer.txCount
   synchronizerDayData.daoFees = synchronizerDayData.daoFees.plus(tx.daoFee)
   synchronizerDayData.partnerFees = synchronizerDayData.partnerFees.plus(tx.partnerFee)
   synchronizerDayData.save()
@@ -71,6 +73,7 @@ export function updateGlobalData(tx: Transaction, event: ethereum.Event): void {
   if (registrar) {
     let registrarDayData = getRegistrarDayData(registrar, event)
     registrarDayData.volumeDEI = registrarDayData.volumeDEI.plus(quoteAmount)
+    registrarDayData.totalVolumeDEI = registrar.quoteVolume
     registrarDayData.txCount = registrarDayData.txCount.plus(BIG_INT_ONE)
     registrarDayData.daoFees = registrarDayData.daoFees.plus(tx.daoFee)
     registrarDayData.partnerFees = registrarDayData.partnerFees.plus(tx.partnerFee)
