@@ -63,6 +63,8 @@ export function updateGlobalData(tx: Transaction, event: ethereum.Event): void {
   let synchronizerDayData = getSynchronizerDayData(event)
   synchronizerDayData.volumeDEI = synchronizerDayData.volumeDEI.plus(quoteAmount)
   synchronizerDayData.txCount = synchronizerDayData.txCount.plus(BIG_INT_ONE)
+  synchronizerDayData.daoFees = synchronizerDayData.daoFees.plus(tx.daoFee)
+  synchronizerDayData.partnerFees = synchronizerDayData.partnerFees.plus(tx.partnerFee)
   synchronizerDayData.save()
 
   // daily registrar data
@@ -70,6 +72,8 @@ export function updateGlobalData(tx: Transaction, event: ethereum.Event): void {
     let registrarDayData = getRegistrarDayData(registrar, event)
     registrarDayData.volumeDEI = registrarDayData.volumeDEI.plus(quoteAmount)
     registrarDayData.txCount = registrarDayData.txCount.plus(BIG_INT_ONE)
+    registrarDayData.daoFees = registrarDayData.daoFees.plus(tx.daoFee)
+    registrarDayData.partnerFees = registrarDayData.partnerFees.plus(tx.partnerFee)
     registrarDayData.save()
   }
 }
@@ -86,6 +90,8 @@ function getSynchronizerDayData(event: ethereum.Event): SynchronizerDayData {
     synchronizerDayData.synchronizer = SYNCHRONIZER_ADDRESS.toHexString()
     synchronizerDayData.volumeDEI = BIG_DECIMAL_ZERO
     synchronizerDayData.txCount = BIG_INT_ZERO
+    synchronizerDayData.daoFees = BIG_DECIMAL_ZERO
+    synchronizerDayData.partnerFees = BIG_DECIMAL_ZERO
   }
 
   return synchronizerDayData as SynchronizerDayData
@@ -104,6 +110,8 @@ function getRegistrarDayData(registar: Registrar, event: ethereum.Event): Regist
     registrarDayData.registrar = registar.id.toString()
     registrarDayData.volumeDEI = BIG_DECIMAL_ZERO
     registrarDayData.txCount = BIG_INT_ZERO
+    registrarDayData.daoFees = BIG_DECIMAL_ZERO
+    registrarDayData.partnerFees = BIG_DECIMAL_ZERO
   }
 
   return registrarDayData as RegistrarDayData

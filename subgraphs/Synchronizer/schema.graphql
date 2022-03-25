@@ -21,6 +21,8 @@ type RegistrarDayData @entity {
   registrar: Registrar!
   volumeDEI: BigDecimal!
   txCount: BigInt!
+  daoFees: BigDecimal!
+  partnerFees: BigDecimal!
 }
 
 #####################################
@@ -43,6 +45,8 @@ type SynchronizerDayData @entity {
   synchronizer: Synchronizer!
   volumeDEI: BigDecimal!
   txCount: BigInt!
+  daoFees: BigDecimal!
+  partnerFees: BigDecimal!
 }
 
 #####################################
