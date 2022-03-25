@@ -4,7 +4,7 @@
   "description": "constants",
   "license": "MIT",
   "private": true,
-  "author": "dSynths",
+  "author": "deusfinance",
   "main": "index.ts",
   "scripts": {
     "codegen": " ",

@@ -3,14 +3,14 @@
   "private": true,
   "license": "MIT",
   "version": "1.0.0",
-  "author": "dSynths",
+  "author": "deusfinance",
   "scripts": {
     "codegen": "graph codegen --output-dir ./generated/",
     "build": "graph build",
-    "create-local": "graph create --node http://localhost:8020/ /dsynths/dsynths",
-    "remove-local": "graph remove --node http://localhost:8020/ /dsynths/dsynths",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 /dsynths/dsynths",
-    "deploy:fantom": "graph deploy dsynths/synchronizer-fantom --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ --debug",
+    "create-local": "graph create --node http://localhost:8020/ /deusfinance/deusfinance",
+    "remove-local": "graph remove --node http://localhost:8020/ /deusfinance/deusfinance",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 /deusfinance/deusfinance",
+    "deploy:fantom": "graph deploy deusfinance/synchronizer-fantom --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ --debug",
     "prepare:fantom": "mustache ../../config/fantom.json template.yaml > subgraph.yaml"
   }
 }
