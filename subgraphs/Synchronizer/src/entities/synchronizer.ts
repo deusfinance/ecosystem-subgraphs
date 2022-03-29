@@ -1,5 +1,6 @@
 import {BigInt, ethereum} from '@graphprotocol/graph-ts'
-import {BIG_DECIMAL_ZERO, BIG_INT_ONE, BIG_INT_ZERO, PLATFORM_ADDRESS, SYNCHRONIZER_ADDRESS} from 'const'
+import {BIG_DECIMAL_ZERO, BIG_INT_ONE, BIG_INT_ZERO} from 'const'
+import {PLATFORM_ADDRESS, SYNCHRONIZER_ADDRESS} from '../../constants'
 import {
   Registrar,
   Transaction,

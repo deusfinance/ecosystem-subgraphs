@@ -1,11 +1,4 @@
 {
   "network": "fantom",
-  "chainId": "250",
-  "platformAddress": "0xEf6b0872CfDF881Cf9Fe0918D3FA979c616AF983",
-  "conductorAddress": "0x570D710d9F20599551246EC24D8A8cCffeb57Ccf",
-  "conductorStartBlock": "30839057",
-  "synchronizerAddress": "0x71EB0bCFeB9610a79af007531aEeeE7848e76E71",
-  "synchronizerStartBlock": "30851858",
-  "partnerManagerAddress": "0x6796a6b39f2c8FF2bEfa223aC6eeD13a4d693ba4",
-  "partnerManagerStartBlock": "30838917"
+  "chainId": "250"
 }

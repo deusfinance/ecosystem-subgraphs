@@ -1,0 +1,24 @@
+type Factory @entity {
+  id: ID!
+  pairCount: Int!
+}
+
+type Pair @entity {
+  id: ID!
+  name: String!
+  symbol: String!
+  decimals: BigInt!
+  createdAt: BigInt!
+  token0: Token!
+  token1: Token!
+  stable: Boolean!
+}
+
+type Token @entity {
+  id: ID!
+  name: String!
+  symbol: String!
+  decimals: BigInt!
+  pairs0: [Pair!]! @derivedFrom(field: "token0")
+  pairs1: [Pair!]! @derivedFrom(field: "token1")
+}

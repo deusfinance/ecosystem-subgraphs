@@ -2,8 +2,9 @@ import {Address, BigInt, BigDecimal, ethereum} from '@graphprotocol/graph-ts'
 
 import {Synchronizer as ISynchronizer} from '../../generated/Synchronizer/Synchronizer'
 import {Partner, Registrar, Transaction} from '../../generated/schema'
-import {BIG_DECIMAL_ZERO, PLATFORM_ADDRESS, SCALE, SYNCHRONIZER_ADDRESS} from 'const'
+import {BIG_DECIMAL_ZERO, SCALE} from 'const'
 import {convertAmountToDecimal, getAction, getPartnerFee} from '../helpers'
+import {PLATFORM_ADDRESS, SYNCHRONIZER_ADDRESS} from '../../constants'
 
 export function createTransaction(
   event: ethereum.Event,
