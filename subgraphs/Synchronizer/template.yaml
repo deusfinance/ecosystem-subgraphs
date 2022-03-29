@@ -1,6 +1,6 @@
 specVersion: 0.0.4
-description: Trade stocks and commodities in a decentralized fashion. No KYC - No Signup.
-repository: https://github.com/dsynths/dsynths-subgraphs
+description: Analytics for the DEUS Synthetics AMM.
+repository: https://github.com/deusfinance/ecosystem-subgraphs
 schema:
   file: ./schema.graphql
 dataSources:

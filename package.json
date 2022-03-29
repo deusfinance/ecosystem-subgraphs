@@ -1,9 +1,9 @@
 {
-  "name": "@dsynths/dsynths-subgraphs",
+  "name": "@deusfinance/ecosystem-subgraphs",
   "private": true,
   "license": "MIT",
   "version": "1.0.0",
-  "repository": "https://github.com/dsynths/dsynths-subgraphs",
+  "repository": "https://github.com/deusfinance/ecosystem-subgraphs",
   "workspaces": [
     "packages/*",
     "subgraphs/*"
