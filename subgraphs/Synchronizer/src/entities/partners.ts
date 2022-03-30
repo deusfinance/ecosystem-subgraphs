@@ -1,5 +1,6 @@
 import {Address, BigInt} from '@graphprotocol/graph-ts'
-import {BIG_INT_ZERO, BIG_INT_ONE, BIG_INT_TWO, PLATFORM_ADDRESS, SCALE} from 'const'
+import {BIG_INT_ZERO, BIG_INT_ONE, BIG_INT_TWO, SCALE} from 'const'
+import {PLATFORM_ADDRESS} from '../../constants'
 import {PartnerManager as IPartnerManager} from '../../generated/PartnerManager/PartnerManager'
 import {Partner} from '../../generated/schema'
 import {convertAmountToDecimal} from '../helpers'

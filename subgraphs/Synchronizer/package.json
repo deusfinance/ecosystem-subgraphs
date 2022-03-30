@@ -7,10 +7,10 @@
   "scripts": {
     "codegen": "graph codegen --output-dir ./generated/",
     "build": "graph build",
-    "create-local": "graph create --node http://localhost:8020/ /deusfinance/deusfinance",
-    "remove-local": "graph remove --node http://localhost:8020/ /deusfinance/deusfinance",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 /deusfinance/deusfinance",
+    "create-local": "graph create --node http://localhost:8020/ /deusfinance/synchronizer",
+    "remove-local": "graph remove --node http://localhost:8020/ /deusfinance/synchronizer",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 /deusfinance/synchronizer",
     "deploy:fantom": "graph deploy deusfinance/synchronizer-fantom --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ --debug",
-    "prepare:fantom": "mustache ../../config/fantom.json template.yaml > subgraph.yaml"
+    "prepare:fantom": "mustache ./config/fantom.json template.yaml > subgraph.yaml && mustache ./config/fantom.json ./constants/template.ts > ./constants/index.ts"
   }
 }

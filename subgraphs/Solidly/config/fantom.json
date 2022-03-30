@@ -1,0 +1,6 @@
+{
+  "network": "fantom",
+  "chainId": "250",
+  "baseV1Factory": "0x3faab499b519fdc5819e3d7ed0c26111904cbc28",
+  "baseV1FactoryStartBlock": "30511466"
+}

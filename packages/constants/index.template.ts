@@ -1,10 +1,7 @@
-import {Address, BigDecimal, BigInt} from '@graphprotocol/graph-ts'
+import {BigDecimal, BigInt} from '@graphprotocol/graph-ts'
 
 export const NULL_CALL_RESULT_VALUE = '0x0000000000000000000000000000000000000000000000000000000000000001'
 export const CHAIN_ID = '{{ chainId }}'
-
-export const PLATFORM_ADDRESS: Address = Address.fromString('{{ platformAddress }}')
-export const SYNCHRONIZER_ADDRESS: Address = Address.fromString('{{ synchronizerAddress }}')
 
 export const SCALE = BigInt.fromI32(18)
 

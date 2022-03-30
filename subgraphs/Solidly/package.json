@@ -1,0 +1,16 @@
+{
+  "name": "solidly",
+  "private": true,
+  "license": "MIT",
+  "version": "1.0.0",
+  "author": "deusfinance",
+  "scripts": {
+    "codegen": "graph codegen --output-dir ./generated/",
+    "build": "graph build",
+    "create-local": "graph create --node http://localhost:8020/ /deusfinance/solidly",
+    "remove-local": "graph remove --node http://localhost:8020/ /deusfinance/solidly",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 /deusfinance/solidly",
+    "deploy:fantom": "graph deploy deusfinance/solidly --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ --debug",
+    "prepare:fantom": "mustache ./config/fantom.json template.yaml > subgraph.yaml && mustache ./config/fantom.json ./constants/template.ts > ./constants/index.ts"
+  }
+}
