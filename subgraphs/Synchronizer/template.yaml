@@ -1,6 +1,6 @@
 specVersion: 0.0.4
 description: Analytics for the DEUS Synthetics AMM.
-repository: https://github.com/deusfinance/ecosystem-subgraphs/subgraphs/Synchronizer
+repository: https://github.com/deusfinance/ecosystem-subgraphs/tree/main/subgraphs/Synchronizer
 schema:
   file: ./schema.graphql
 dataSources:

@@ -41,8 +41,8 @@ export function createSnapshotOnTransfer(event: ethereum.Event, from: Address, t
   let toSnapshot = new UserBalanceSnapshot(hash.concat(':').concat(to.toHexString()))
   toSnapshot.timestamp = event.block.timestamp
   toSnapshot.user = to
-  fromSnapshot.registrar = registrar.toHexString()
-  fromSnapshot.amount = getUserBalance(to, registrar)
+  toSnapshot.registrar = registrar.toHexString()
+  toSnapshot.amount = getUserBalance(to, registrar)
   toSnapshot.save()
 }
 

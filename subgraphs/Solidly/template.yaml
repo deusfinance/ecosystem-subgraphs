@@ -1,6 +1,6 @@
 specVersion: 0.0.4
 description: Analytics for the Solidly AMM.
-repository: https://github.com/deusfinance/ecosystem-subgraphs/subgraphs/Solidly
+repository: https://github.com/deusfinance/ecosystem-subgraphs/tree/main/subgraphs/Solidly
 schema:
   file: ./schema.graphql
 dataSources:
