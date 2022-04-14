@@ -1,0 +1,104 @@
+#####################################
+############# REGISTRARS ############
+#####################################
+type Registrar @entity {
+  id: ID!
+  name: String!
+  ticker: String!
+  symbol: String!
+  version: String!
+  type: String!
+  liquidated: Boolean!
+  quoteVolume: BigDecimal!
+  paidFees: BigDecimal!
+  transactions: [Transaction!]! @derivedFrom(field: "registrar")
+  dayData: [RegistrarDayData!]! @derivedFrom(field: "registrar")
+}
+
+type RegistrarDayData @entity {
+  id: ID! # timestamp / 86400, floored
+  date: Int!
+  registrar: Registrar!
+  volumeDEI: BigDecimal!
+  totalVolumeDEI: BigDecimal!
+  txCount: BigInt!
+  platformFees: BigDecimal!
+  partnerFees: BigDecimal!
+}
+
+#####################################
+########### SYNCHRONIZER ############
+#####################################
+type Synchronizer @entity {
+  id: ID!
+  totalVolumeDEI: BigDecimal!
+  stockVolumeDEI: BigDecimal!
+  cryptoVolumeDEI: BigDecimal!
+  forexVolumeDEI: BigDecimal!
+  commodityVolumeDEI: BigDecimal!
+  miscVolumeDEI: BigDecimal!
+  registrarCount: Int!
+  txCount: BigInt!
+  platformFees: BigDecimal!
+  partnerFees: BigDecimal!
+  dayData: [SynchronizerDayData!]! @derivedFrom(field: "synchronizer")
+}
+
+type SynchronizerDayData @entity {
+  id: ID! # timestamp / 86400, floored
+  date: Int!
+  synchronizer: Synchronizer!
+  volumeDEI: BigDecimal!
+  totalVolumeDEI: BigDecimal!
+  txCount: BigInt!
+  totalTxCount: BigInt!
+  platformFees: BigDecimal!
+  partnerFees: BigDecimal!
+}
+
+#####################################
+############### MISC ################
+#####################################
+type Partner @entity {
+  id: ID!
+
+  stockFee: BigDecimal!
+  cryptoFee: BigDecimal!
+  forexFee: BigDecimal!
+  commodityFee: BigDecimal!
+  miscFee: BigDecimal!
+
+  stockVolumeDEI: BigDecimal!
+  cryptoVolumeDEI: BigDecimal!
+  forexVolumeDEI: BigDecimal!
+  commodityVolumeDEI: BigDecimal!
+  miscVolumeDEI: BigDecimal!
+
+  cumulativeFees: BigDecimal!
+  claimableFees: BigDecimal!
+  transactions: [Transaction!]! @derivedFrom(field: "partner")
+}
+
+type Transaction @entity {
+  id: ID!
+  timestamp: BigInt!
+  block: BigInt!
+  method: String!
+  from: Bytes!
+  to: Bytes!
+  registrar: Registrar!
+  price: BigDecimal!
+  amountIn: BigDecimal!
+  amountOut: BigDecimal!
+  partner: Partner!
+  platformFee: BigDecimal!
+  partnerFee: BigDecimal!
+}
+
+type UserBalanceSnapshot @entity {
+  id: ID!
+  user: Bytes!
+  timestamp: BigInt!
+  registrar: Registrar!
+  amount: BigDecimal!
+}

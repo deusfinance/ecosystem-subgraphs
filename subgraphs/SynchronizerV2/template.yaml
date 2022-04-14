@@ -1,6 +1,6 @@
 specVersion: 0.0.4
-description: Analytics for the DEUS Synthetics AMM (deprecated).
-repository: https://github.com/deusfinance/ecosystem-subgraphs/tree/main/subgraphs/Synchronizer
+description: Analytics for the DEUS Synthetics AMM.
+repository: https://github.com/deusfinance/ecosystem-subgraphs/tree/main/subgraphs/SynchronizerV2
 schema:
   file: ./schema.graphql
 dataSources:
@@ -78,8 +78,10 @@ dataSources:
         - name: PartnerManager
           file: ./abis/PartnerManager.json
       eventHandlers:
-        - event: PartnerAdded(address,uint256[3])
-          handler: handlePartnerAdded
+        - event: RegistrarFeeAdded(address,uint256[],uint256[])
+          handler: handleRegistrarFeeAdded
+        - event: PlatformFeeAdded(uint256[],uint256[],uint256[])
+          handler: handlePlatformFeeAdded
 templates:
   - name: Registrar
     kind: ethereum/contract

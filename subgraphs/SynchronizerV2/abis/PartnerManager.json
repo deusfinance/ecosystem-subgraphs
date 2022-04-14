@@ -1,0 +1,149 @@
+[
+  {
+    "inputs": [
+      {"internalType": "address", "name": "owner", "type": "address"},
+      {"internalType": "address", "name": "platformFeeCollector_", "type": "address"},
+      {"internalType": "uint256[]", "name": "minPlatformFee_", "type": "uint256[]"},
+      {"internalType": "uint256[]", "name": "minTotalFee_", "type": "uint256[]"}
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {"indexed": true, "internalType": "address", "name": "previousOwner", "type": "address"},
+      {"indexed": true, "internalType": "address", "name": "newOwner", "type": "address"}
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {"indexed": false, "internalType": "uint256[]", "name": "registrarType", "type": "uint256[]"},
+      {"indexed": false, "internalType": "uint256[]", "name": "minPlatformFee", "type": "uint256[]"},
+      {"indexed": false, "internalType": "uint256[]", "name": "minTotalFee", "type": "uint256[]"}
+    ],
+    "name": "PlatformFeeAdded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {"indexed": false, "internalType": "address", "name": "owner", "type": "address"},
+      {"indexed": false, "internalType": "uint256[]", "name": "registrarType", "type": "uint256[]"},
+      {"indexed": false, "internalType": "uint256[]", "name": "partnerFee", "type": "uint256[]"}
+    ],
+    "name": "RegistrarFeeAdded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {"indexed": false, "internalType": "address", "name": "partnerId", "type": "address"},
+      {"indexed": false, "internalType": "int256", "name": "cap", "type": "int256"}
+    ],
+    "name": "SetCap",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {"internalType": "uint256[]", "name": "registrarType", "type": "uint256[]"},
+      {"internalType": "uint256[]", "name": "minPlatformFee_", "type": "uint256[]"},
+      {"internalType": "uint256[]", "name": "minTotalFee_", "type": "uint256[]"}
+    ],
+    "name": "addPlatformFee",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {"internalType": "uint256[]", "name": "registrarType", "type": "uint256[]"},
+      {"internalType": "uint256[]", "name": "partnerFee_", "type": "uint256[]"}
+    ],
+    "name": "addRegistrarFee",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType": "address", "name": "", "type": "address"}],
+    "name": "isPartner",
+    "outputs": [{"internalType": "bool", "name": "", "type": "bool"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType": "address", "name": "", "type": "address"}],
+    "name": "maxCap",
+    "outputs": [{"internalType": "int256", "name": "", "type": "int256"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+    "name": "minPlatformFee",
+    "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+    "name": "minTotalFee",
+    "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [{"internalType": "address", "name": "", "type": "address"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {"internalType": "address", "name": "", "type": "address"},
+      {"internalType": "uint256", "name": "", "type": "uint256"}
+    ],
+    "name": "partnerFee",
+    "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "platformFeeCollector",
+    "outputs": [{"internalType": "address", "name": "", "type": "address"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {"inputs": [], "name": "renounceOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function"},
+  {
+    "inputs": [],
+    "name": "scale",
+    "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {"internalType": "address", "name": "partnerId", "type": "address"},
+      {"internalType": "int256", "name": "cap", "type": "int256"},
+      {"internalType": "bool", "name": "isNegative", "type": "bool"}
+    ],
+    "name": "setCap",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType": "address", "name": "newOwner", "type": "address"}],
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]

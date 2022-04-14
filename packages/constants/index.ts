@@ -8,5 +8,7 @@ export const SCALE = BigInt.fromI32(18)
 export const BIG_INT_ZERO = BigInt.fromI32(0)
 export const BIG_INT_ONE = BigInt.fromI32(1)
 export const BIG_INT_TWO = BigInt.fromI32(2)
+export const BIG_INT_THREE = BigInt.fromI32(3)
+export const BIG_INT_FOUR = BigInt.fromI32(4)
 
 export const BIG_DECIMAL_ZERO = BigDecimal.fromString('0')
