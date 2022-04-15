@@ -1,7 +1,7 @@
 import {Address, BigInt} from '@graphprotocol/graph-ts'
 import {SCALE, BIG_INT_ZERO, BIG_INT_ONE, BIG_INT_TWO, BIG_DECIMAL_ZERO, BIG_INT_THREE, BIG_INT_FOUR} from 'const'
 
-import {PLATFORM_ADDRESS} from '../../constants'
+import {PLATFORM_ADDRESS, PARTNER_MANAGER_ADDRESS} from '../../constants'
 import {PartnerManager as IPartnerManager} from '../../generated/PartnerManager/PartnerManager'
 import {Partner} from '../../generated/schema'
 import {convertAmountToDecimal} from '../helpers'
@@ -53,11 +53,11 @@ export function addPartnerFee(partnerId: Address, registrarType: BigInt, partner
 }
 
 function addInitialPlatformFee(): void {
-  addPartnerFee(PLATFORM_ADDRESS, BIG_INT_ZERO, getPlatformStockFee(PLATFORM_ADDRESS))
-  addPartnerFee(PLATFORM_ADDRESS, BIG_INT_ONE, getPlatformCryptoFee(PLATFORM_ADDRESS))
-  addPartnerFee(PLATFORM_ADDRESS, BIG_INT_TWO, getPlatformForexFee(PLATFORM_ADDRESS))
-  addPartnerFee(PLATFORM_ADDRESS, BIG_INT_THREE, getPlatformCommodityFee(PLATFORM_ADDRESS))
-  addPartnerFee(PLATFORM_ADDRESS, BIG_INT_FOUR, getPlatformMiscFee(PLATFORM_ADDRESS))
+  addPartnerFee(PLATFORM_ADDRESS, BIG_INT_ZERO, getPlatformStockFee(PARTNER_MANAGER_ADDRESS))
+  addPartnerFee(PLATFORM_ADDRESS, BIG_INT_ONE, getPlatformCryptoFee(PARTNER_MANAGER_ADDRESS))
+  addPartnerFee(PLATFORM_ADDRESS, BIG_INT_TWO, getPlatformForexFee(PARTNER_MANAGER_ADDRESS))
+  addPartnerFee(PLATFORM_ADDRESS, BIG_INT_THREE, getPlatformCommodityFee(PARTNER_MANAGER_ADDRESS))
+  addPartnerFee(PLATFORM_ADDRESS, BIG_INT_FOUR, getPlatformMiscFee(PARTNER_MANAGER_ADDRESS))
 }
 
 export function withdrawFee(partnerId: Address, partnerFeeAmount: BigInt, platformFeeAmount: BigInt): void {
@@ -76,30 +76,25 @@ export function withdrawFee(partnerId: Address, partnerFeeAmount: BigInt, platfo
 
 function getPlatformStockFee(manager: Address): BigInt {
   const contract = IPartnerManager.bind(manager)
-  const result = contract.try_minPlatformFee(BIG_INT_ZERO)
-  return result.reverted ? BIG_INT_ZERO : result.value
+  return contract.minPlatformFee(BIG_INT_ZERO)
 }
 
 function getPlatformCryptoFee(manager: Address): BigInt {
   const contract = IPartnerManager.bind(manager)
-  const result = contract.try_minPlatformFee(BIG_INT_ONE)
-  return result.reverted ? BIG_INT_ZERO : result.value
+  return contract.minPlatformFee(BIG_INT_ONE)
 }
 
 function getPlatformForexFee(manager: Address): BigInt {
   const contract = IPartnerManager.bind(manager)
-  const result = contract.try_minPlatformFee(BIG_INT_TWO)
-  return result.reverted ? BIG_INT_ZERO : result.value
+  return contract.minPlatformFee(BIG_INT_TWO)
 }
 
 function getPlatformCommodityFee(manager: Address): BigInt {
   const contract = IPartnerManager.bind(manager)
-  const result = contract.try_minPlatformFee(BIG_INT_THREE)
-  return result.reverted ? BIG_INT_ZERO : result.value
+  return contract.minPlatformFee(BIG_INT_THREE)
 }
 
 function getPlatformMiscFee(manager: Address): BigInt {
   const contract = IPartnerManager.bind(manager)
-  const result = contract.try_minPlatformFee(BIG_INT_FOUR)
-  return result.reverted ? BIG_INT_ZERO : result.value
+  return contract.minPlatformFee(BIG_INT_FOUR)
 }

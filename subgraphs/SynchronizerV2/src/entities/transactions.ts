@@ -1,8 +1,8 @@
 import {Address, BigInt, BigDecimal, ethereum} from '@graphprotocol/graph-ts'
+import {BIG_DECIMAL_ZERO, SCALE} from 'const'
 
 import {Synchronizer as ISynchronizer} from '../../generated/Synchronizer/Synchronizer'
 import {Partner, Registrar, Transaction} from '../../generated/schema'
-import {BIG_DECIMAL_ZERO, SCALE} from 'const'
 import {convertAmountToDecimal, getAction, getPartnerFee} from '../helpers'
 import {PLATFORM_ADDRESS, SYNCHRONIZER_ADDRESS} from '../../constants'
 

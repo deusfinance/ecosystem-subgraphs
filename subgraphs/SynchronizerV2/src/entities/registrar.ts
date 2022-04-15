@@ -51,21 +51,19 @@ export function fetchTokenVersion(contractAddress: Address): string {
 
 export function fetchTokenType(contractAddress: Address): string {
   let contract = IRegistrar.bind(contractAddress)
-  const result = contract.try_registrarType()
-
-  if (result.reverted) return 'misc'
+  const result = contract.try_registrarType().value
 
   // note: switch-case breaks compilation
-  if (result.value.toString() == '0') {
+  if (result.toString() == '0') {
     return 'stock'
   }
-  if (result.value.toString() == '1') {
+  if (result.toString() == '1') {
     return 'crypto'
   }
-  if (result.value.toString() == '2') {
+  if (result.toString() == '2') {
     return 'forex'
   }
-  if (result.value.toString() == '3') {
+  if (result.toString() == '3') {
     return 'commodity'
   }
   return 'misc'
