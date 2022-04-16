@@ -24,16 +24,16 @@ export function convertAmountToDecimal(amount: BigInt, decimals: BigInt): BigDec
 }
 
 export function getPartnerFee(partner: Partner, type: string): BigDecimal {
-  if (type === 'stock') {
+  if (type == 'stock') {
     return partner.stockFee
   }
-  if (type === 'crypto') {
+  if (type == 'crypto') {
     return partner.cryptoFee
   }
-  if (type === 'forex') {
+  if (type == 'forex') {
     return partner.forexFee
   }
-  if (type === 'commodity') {
+  if (type == 'commodity') {
     return partner.commodityFee
   }
   return partner.miscFee
@@ -46,13 +46,13 @@ export function getRegistrarVolume(type: string, quoteAmount: BigDecimal): BigDe
   let commodityVolume = BIG_DECIMAL_ZERO
   let miscVolume = BIG_DECIMAL_ZERO
 
-  if (type === 'stock') {
+  if (type == 'stock') {
     stockVolume = quoteAmount
-  } else if (type === 'crypto') {
+  } else if (type == 'crypto') {
     cryptoVolume = quoteAmount
-  } else if (type === 'forex') {
+  } else if (type == 'forex') {
     forexVolume = quoteAmount
-  } else if (type === 'commodity') {
+  } else if (type == 'commodity') {
     commodityVolume = quoteAmount
   } else {
     miscVolume = quoteAmount

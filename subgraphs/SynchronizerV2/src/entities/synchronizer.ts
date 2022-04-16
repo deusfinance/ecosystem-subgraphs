@@ -103,7 +103,7 @@ function getSynchronizerDayData(event: ethereum.Event): SynchronizerDayData {
   const dayStartTimestamp = dayID * 86400
   let synchronizerDayData = SynchronizerDayData.load(dayID.toString())
 
-  if (synchronizerDayData === null) {
+  if (!synchronizerDayData) {
     synchronizerDayData = new SynchronizerDayData(dayID.toString())
     synchronizerDayData.date = dayStartTimestamp
     synchronizerDayData.synchronizer = SYNCHRONIZER_ADDRESS.toHexString()
@@ -123,7 +123,7 @@ function getRegistrarDayData(registar: Registrar, event: ethereum.Event): Regist
   const dayPairID = registar.id.concat('-').concat(BigInt.fromI32(dayID).toHexString())
 
   let registrarDayData = RegistrarDayData.load(dayPairID)
-  if (registrarDayData === null) {
+  if (!registrarDayData) {
     registrarDayData = new RegistrarDayData(dayPairID)
     registrarDayData.date = dayStartTimestamp
     registrarDayData.registrar = registar.id.toString()

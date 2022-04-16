@@ -4,6 +4,7 @@ import {Registrar} from '../../generated/schema'
 import {ERC20} from '../../generated/Conductor/ERC20'
 import {Registrar as IRegistrar} from '../../generated/Conductor/Registrar'
 import {getSynchronizer} from './synchronizer'
+import {BIG_INT_ONE, BIG_INT_THREE, BIG_INT_TWO, BIG_INT_ZERO} from 'const'
 
 export function conductRegistrar(_id: string, short: Address, long: Address): void {
   createRegistrar(_id, short)
@@ -36,34 +37,34 @@ export function createRegistrar(ticker: string, contract: Address): void {
 
 export function fetchTokenName(contractAddress: Address): string {
   let contract = ERC20.bind(contractAddress)
-  return contract.try_name().value
+  return contract.name()
 }
 
 export function fetchTokenSymbol(contractAddress: Address): string {
   let contract = ERC20.bind(contractAddress)
-  return contract.try_symbol().value
+  return contract.symbol()
 }
 
 export function fetchTokenVersion(contractAddress: Address): string {
   let contract = IRegistrar.bind(contractAddress)
-  return contract.try_version().value
+  return contract.version()
 }
 
 export function fetchTokenType(contractAddress: Address): string {
   let contract = IRegistrar.bind(contractAddress)
-  const result = contract.try_registrarType().value
+  const result = contract.registrarType()
 
   // note: switch-case breaks compilation
-  if (result.toString() == '0') {
+  if (result.toString() == '0' || result.equals(BIG_INT_ZERO)) {
     return 'stock'
   }
-  if (result.toString() == '1') {
+  if (result.toString() == '1' || result.equals(BIG_INT_ONE)) {
     return 'crypto'
   }
-  if (result.toString() == '2') {
+  if (result.toString() == '2' || result.equals(BIG_INT_TWO)) {
     return 'forex'
   }
-  if (result.toString() == '3') {
+  if (result.toString() == '3' || result.equals(BIG_INT_THREE)) {
     return 'commodity'
   }
   return 'misc'
