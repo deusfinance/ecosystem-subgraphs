@@ -5,7 +5,7 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: Solidly
+    name: Factory
     network: '{{ network }}'
     source:
       address: '{{ baseV1Factory }}'
@@ -15,16 +15,13 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
-      file: ./src/mapping.ts
+      file: ./src/mappings/index.ts
       entities:
-        - Factory
         - Pair
         - Token
       abis:
         - name: BaseV1Factory
           file: ./abis/BASE_V1_FACTORY.json
-        - name: BaseV1Pair
-          file: ./abis/BASE_V1_PAIR.json
         - name: ERC20
           file: ./abis/ERC20.json
         - name: ERC20NameBytes
@@ -34,3 +31,33 @@ dataSources:
       eventHandlers:
         - event: PairCreated(indexed address,indexed address,bool,address,uint256)
           handler: handlePairCreated
+templates:
+  - kind: ethereum/contract
+    name: Pair
+    network: '{{ network }}'
+    source:
+      abi: BaseV1Pair
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mappings/index.ts
+      entities:
+        - Pair
+        - Token
+      abis:
+        - name: BaseV1Pair
+          file: ./abis/BASE_V1_PAIR.json
+        - name: BaseV1Factory
+          file: ./abis/BASE_V1_FACTORY.json
+      eventHandlers:
+        - event: Mint(indexed address,uint256,uint256)
+          handler: handleMint
+        - event: Burn(indexed address,uint256,uint256,indexed address)
+          handler: handleBurn
+        - event: Swap(indexed address,uint256,uint256,uint256,uint256,indexed address)
+          handler: handleSwap
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+        - event: Sync(uint256,uint256)
+          handler: handleSync
