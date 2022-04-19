@@ -94,9 +94,13 @@ export function handlePairCreated(event: PairCreated): void {
     token1.txCount = BIG_INT_ZERO
   }
 
-  let pair = new Pair(event.params.pair.toHexString())
+  let pairAddress = event.params.pair
+  let pair = new Pair(pairAddress.toHexString())
 
   pair.stable = event.params.stable
+  pair.name = fetchTokenName(pairAddress)
+  pair.symbol = fetchTokenSymbol(pairAddress)
+  pair.decimals = fetchTokenDecimals(pairAddress)
   pair.token0 = token0.id
   pair.token1 = token1.id
 

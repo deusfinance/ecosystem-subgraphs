@@ -1,5 +1,5 @@
 import {log, BigInt, BigDecimal, Address, ethereum} from '@graphprotocol/graph-ts'
-import {BIG_DECIMAL_ZERO, BIG_INT_ONE, BIG_INT_ZERO, NULL_CALL_RESULT_VALUE} from 'const'
+import {BIG_DECIMAL_ZERO, BIG_INT_ONE, BIG_INT_ZERO, NULL_CALL_RESULT_VALUE, SCALE} from 'const'
 
 import {ERC20} from '../generated/Factory/ERC20'
 import {ERC20SymbolBytes} from '../generated/Factory/ERC20SymbolBytes'
@@ -24,8 +24,8 @@ export function bigDecimalExp18(): BigDecimal {
   return BigDecimal.fromString('1000000000000000000')
 }
 
-export function convertEthToDecimal(eth: BigInt): BigDecimal {
-  return eth.toBigDecimal().div(exponentToBigDecimal(BigInt.fromString('18')))
+export function convertFtmToDecimal(ftm: BigInt): BigDecimal {
+  return ftm.toBigDecimal().div(exponentToBigDecimal(SCALE))
 }
 
 export function convertTokenToDecimal(tokenAmount: BigInt, exchangeDecimals: BigInt): BigDecimal {
@@ -132,7 +132,7 @@ export function createLiquidityPosition(exchange: Address, user: Address): Liqui
 
 export function createUser(address: Address): void {
   let user = User.load(address.toHexString())
-  if (user === null) {
+  if (!user) {
     user = new User(address.toHexString())
     user.usdSwapped = BIG_DECIMAL_ZERO
     user.save()

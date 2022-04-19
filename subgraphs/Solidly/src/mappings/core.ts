@@ -5,7 +5,7 @@ import {Pair, Token, Transaction, Mint as MintEvent, Burn as BurnEvent, Swap as 
 import {BaseV1Pair as PairContract, Mint, Burn, Swap, Transfer, Sync} from '../../generated/templates/Pair/BaseV1Pair'
 import {updatePairDayData, updateTokenDayData, updateUniswapDayData, updatePairHourData} from './dayUpdates'
 
-import {getEthPriceInUSD, findFtmPerToken, getTrackedVolumeUSD, getTrackedLiquidityUSD} from '../pricing'
+import {getFtmPriceInUSD, findFtmPerToken, getTrackedVolumeUSD, getTrackedLiquidityUSD} from '../pricing'
 import {convertTokenToDecimal, createUser, createLiquidityPosition, createLiquiditySnapshot} from '../helpers'
 import {getBundle, getFactory} from './factory'
 
@@ -72,7 +72,7 @@ export function handleTransfer(event: Transfer): void {
     }
   }
 
-  // case where direct send first on FTM withdrawls
+  // case where direct send first on FTM withdrawals
   if (event.params.to.toHexString() == pair.id) {
     let burns = transaction.burns
     let burn = new BurnEvent(
@@ -96,7 +96,7 @@ export function handleTransfer(event: Transfer): void {
   }
 
   // burn
-  if (event.params.to.toHexString() == ADDRESS_ZERO && pair && event.params.from.toHexString() == pair.id) {
+  if (event.params.to.toHexString() == ADDRESS_ZERO && event.params.from.toHexString() == pair.id) {
     pair.totalSupply = pair.totalSupply.minus(value)
     pair.save()
 
@@ -106,7 +106,7 @@ export function handleTransfer(event: Transfer): void {
     if (burns.length > 0) {
       let currentBurn = BurnEvent.load(burns[burns.length - 1])
       if (currentBurn && currentBurn.needsComplete) {
-        burn = currentBurn as BurnEvent
+        burn = currentBurn
       } else {
         burn = new BurnEvent(
           event.transaction.hash.toHexString().concat('-').concat(BigInt.fromI32(burns.length).toString())
@@ -190,7 +190,7 @@ export function handleSync(event: Sync): void {
   let factory = getFactory()
   if (!token0 || !token1) return
 
-  // reset factory liquidity by subtracting onluy tracked liquidity
+  // reset factory liquidity by subtracting only tracked liquidity
   factory.totalLiquidityFTM = factory.totalLiquidityFTM.minus(pair.trackedReserveFTM)
 
   // reset token total liquidity amounts
@@ -209,33 +209,29 @@ export function handleSync(event: Sync): void {
 
   // update FTM price now that reserves could have changed
   let bundle = getBundle()
-  bundle.ftmPrice = getEthPriceInUSD()
+  bundle.ftmPrice = getFtmPriceInUSD()
   bundle.save()
 
   token0.derivedFTM = findFtmPerToken(token0, pair.stable)
-  token1.derivedFTM = findFtmPerToken(token1, pair.stable)
   token0.save()
+  token1.derivedFTM = findFtmPerToken(token1, pair.stable)
   token1.save()
 
   // get tracked liquidity - will be 0 if neither is in whitelist
-  let trackedLiquidityETH: BigDecimal
+  let trackedLiquidityFTM: BigDecimal
   if (bundle.ftmPrice.notEqual(BIG_DECIMAL_ZERO)) {
-    trackedLiquidityETH = getTrackedLiquidityUSD(pair.reserve0, token0 as Token, pair.reserve1, token1 as Token).div(
-      bundle.ftmPrice
-    )
+    trackedLiquidityFTM = getTrackedLiquidityUSD(pair.reserve0, token0, pair.reserve1, token1).div(bundle.ftmPrice)
   } else {
-    trackedLiquidityETH = BIG_DECIMAL_ZERO
+    trackedLiquidityFTM = BIG_DECIMAL_ZERO
   }
 
   // use derived amounts within pair
-  pair.trackedReserveFTM = trackedLiquidityETH
-  pair.reserveFTM = pair.reserve0
-    .times(token0.derivedFTM as BigDecimal)
-    .plus(pair.reserve1.times(token1.derivedFTM as BigDecimal))
+  pair.trackedReserveFTM = trackedLiquidityFTM
+  pair.reserveFTM = pair.reserve0.times(token0.derivedFTM).plus(pair.reserve1.times(token1.derivedFTM))
   pair.reserveUSD = pair.reserveFTM.times(bundle.ftmPrice)
 
   // use tracked amounts globally
-  factory.totalLiquidityFTM = factory.totalLiquidityFTM.plus(trackedLiquidityETH)
+  factory.totalLiquidityFTM = factory.totalLiquidityFTM.plus(trackedLiquidityFTM)
   factory.totalLiquidityUSD = factory.totalLiquidityFTM.times(bundle.ftmPrice)
 
   // now correctly set liquidity amounts for each token
@@ -270,12 +266,9 @@ export function handleMint(event: Mint): void {
 
   // get new amounts of USD and FTM for tracking
   let bundle = getBundle()
-  let token0DerivedFTM = token0.derivedFTM ? token0.derivedFTM : BIG_DECIMAL_ZERO
-  let token1DerivedFTM = token1.derivedFTM ? token1.derivedFTM : BIG_DECIMAL_ZERO
-
-  let amountTotalUSD = token1DerivedFTM
+  let amountTotalUSD = token1.derivedFTM
     .times(token1Amount)
-    .plus(token0DerivedFTM.times(token0Amount))
+    .plus(token0.derivedFTM.times(token0Amount))
     .times(bundle.ftmPrice)
 
   // update txn counts
@@ -294,11 +287,12 @@ export function handleMint(event: Mint): void {
     let mint = MintEvent.load(mints[mints.length - 1])
     if (mint) {
       mint.sender = event.params.sender
-      mint.amount0 = token0Amount as BigDecimal
-      mint.amount1 = token1Amount as BigDecimal
+      mint.amount0 = token0Amount
+      mint.amount1 = token1Amount
       mint.logIndex = event.logIndex
-      mint.amountUSD = amountTotalUSD as BigDecimal
+      mint.amountUSD = amountTotalUSD
       mint.save()
+
       // update the LP position
       let liquidityPosition = createLiquidityPosition(event.address, changetype<Address>(mint.to))
       createLiquiditySnapshot(liquidityPosition, event)
@@ -334,12 +328,9 @@ export function handleBurn(event: Burn): void {
 
   // get new amounts of USD and FTM for tracking
   let bundle = getBundle()
-  let token0DerivedFTM = token0.derivedFTM ? token0.derivedFTM : BIG_DECIMAL_ZERO
-  let token1DerivedFTM = token1.derivedFTM ? token1.derivedFTM : BIG_DECIMAL_ZERO
-
-  let amountTotalUSD = token1DerivedFTM
+  let amountTotalUSD = token1.derivedFTM
     .times(token1Amount)
-    .plus(token0DerivedFTM.times(token0Amount))
+    .plus(token0.derivedFTM.times(token0Amount))
     .times(bundle.ftmPrice)
 
   // update txn counts
@@ -358,10 +349,10 @@ export function handleBurn(event: Burn): void {
     let burn = BurnEvent.load(burns[burns.length - 1])
     if (burn) {
       burn.sender = event.params.sender
-      burn.amount0 = token0Amount as BigDecimal
-      burn.amount1 = token1Amount as BigDecimal
+      burn.amount0 = token0Amount
+      burn.amount1 = token1Amount
       burn.logIndex = event.logIndex
-      burn.amountUSD = amountTotalUSD as BigDecimal
+      burn.amountUSD = amountTotalUSD
       burn.save()
 
       // update the LP position
@@ -399,23 +390,20 @@ export function handleSwap(event: Swap): void {
   let bundle = getBundle()
 
   // get total amounts of derived USD and FTM for tracking
-  let token0DerivedFTM = token0.derivedFTM ? token0.derivedFTM : BIG_DECIMAL_ZERO
-  let token1DerivedFTM = token1.derivedFTM ? token1.derivedFTM : BIG_DECIMAL_ZERO
-
-  let derivedAmountETH = token1DerivedFTM
+  let derivedAmountFTM = token1.derivedFTM
     .times(amount1Total)
-    .plus(token0DerivedFTM.times(amount0Total))
+    .plus(token0.derivedFTM.times(amount0Total))
     .div(BigDecimal.fromString('2'))
-  let derivedAmountUSD = derivedAmountETH.times(bundle.ftmPrice)
+  let derivedAmountUSD = derivedAmountFTM.times(bundle.ftmPrice)
 
   // only accounts for volume through white listed tokens
   let trackedAmountUSD = getTrackedVolumeUSD(amount0Total, token0, amount1Total, token1, pair)
 
-  let trackedAmountETH: BigDecimal
+  let trackedAmountFTM: BigDecimal
   if (bundle.ftmPrice.equals(BIG_DECIMAL_ZERO)) {
-    trackedAmountETH = BIG_DECIMAL_ZERO
+    trackedAmountFTM = BIG_DECIMAL_ZERO
   } else {
-    trackedAmountETH = trackedAmountUSD.div(bundle.ftmPrice)
+    trackedAmountFTM = trackedAmountUSD.div(bundle.ftmPrice)
   }
 
   // update token0 global volume and token liquidity stats
@@ -443,7 +431,7 @@ export function handleSwap(event: Swap): void {
   // update global values, only used tracked amounts for volume
   let factory = getFactory()
   factory.totalVolumeUSD = factory.totalVolumeUSD.plus(trackedAmountUSD)
-  factory.totalVolumeFTM = factory.totalVolumeFTM.plus(trackedAmountETH)
+  factory.totalVolumeFTM = factory.totalVolumeFTM.plus(trackedAmountFTM)
   factory.untrackedVolumeUSD = factory.untrackedVolumeUSD.plus(derivedAmountUSD)
   factory.txCount = factory.txCount.plus(BIG_INT_ONE)
 
@@ -501,7 +489,7 @@ export function handleSwap(event: Swap): void {
 
   // swap specific updating
   uniswapDayData.dailyVolumeUSD = uniswapDayData.dailyVolumeUSD.plus(trackedAmountUSD)
-  uniswapDayData.dailyVolumeFTM = uniswapDayData.dailyVolumeFTM.plus(trackedAmountETH)
+  uniswapDayData.dailyVolumeFTM = uniswapDayData.dailyVolumeFTM.plus(trackedAmountFTM)
   uniswapDayData.dailyVolumeUntracked = uniswapDayData.dailyVolumeUntracked.plus(derivedAmountUSD)
   uniswapDayData.save()
 
@@ -519,17 +507,17 @@ export function handleSwap(event: Swap): void {
 
   // swap specific updating for token0
   token0DayData.dailyVolumeToken = token0DayData.dailyVolumeToken.plus(amount0Total)
-  token0DayData.dailyVolumeFTM = token0DayData.dailyVolumeFTM.plus(amount0Total.times(token0.derivedFTM as BigDecimal))
+  token0DayData.dailyVolumeFTM = token0DayData.dailyVolumeFTM.plus(amount0Total.times(token0.derivedFTM))
   token0DayData.dailyVolumeUSD = token0DayData.dailyVolumeUSD.plus(
-    amount0Total.times(token0.derivedFTM as BigDecimal).times(bundle.ftmPrice)
+    amount0Total.times(token0.derivedFTM).times(bundle.ftmPrice)
   )
   token0DayData.save()
 
   // swap specific updating
   token1DayData.dailyVolumeToken = token1DayData.dailyVolumeToken.plus(amount1Total)
-  token1DayData.dailyVolumeFTM = token1DayData.dailyVolumeFTM.plus(amount1Total.times(token1.derivedFTM as BigDecimal))
+  token1DayData.dailyVolumeFTM = token1DayData.dailyVolumeFTM.plus(amount1Total.times(token1.derivedFTM))
   token1DayData.dailyVolumeUSD = token1DayData.dailyVolumeUSD.plus(
-    amount1Total.times(token1.derivedFTM as BigDecimal).times(bundle.ftmPrice)
+    amount1Total.times(token1.derivedFTM).times(bundle.ftmPrice)
   )
   token1DayData.save()
 }
