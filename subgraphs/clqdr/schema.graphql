@@ -1,0 +1,24 @@
+type Latest @entity {
+  id: ID!
+  totalReserve: BigDecimal!
+  totalSupply: BigDecimal!
+  priceShare: BigDecimal!
+}
+
+type Snapshot @entity {
+  id: ID!
+  block: BigInt!
+  hash: Bytes!
+  timestamp: BigInt!
+  totalReserve: BigDecimal!
+  totalSupply: BigDecimal!
+  priceShare: BigDecimal!
+}
+
+type HourlySnapshot @entity {
+  id: ID!
+  totalReserve: BigDecimal!
+  totalSupply: BigDecimal!
+  priceShare: BigDecimal!
+  snapshots: [Snapshot!]!
+}
