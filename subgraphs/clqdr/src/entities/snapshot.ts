@@ -11,25 +11,24 @@ export function createSnapshot(event: ethereum.Event): Snapshot {
   const totalReserve = fetchTotalReserve()
   const totalSupply = fetchTotalSupply()
 
-  let snapshot = new Snapshot(id)
+  const snapshot = new Snapshot(id)
   snapshot.block = event.block.number
   snapshot.hash = event.transaction.hash
   snapshot.timestamp = event.block.timestamp
   snapshot.totalReserve = convertAmountToDecimal(totalReserve, SCALE)
   snapshot.totalSupply = convertAmountToDecimal(totalSupply, SCALE)
-  snapshot.priceShare = convertAmountToDecimal(calculateRatio(totalReserve, totalSupply), SCALE)
+  snapshot.priceShare = convertAmountToDecimal(calculateRatio(totalReserve, totalSupply), BIG_INT_ZERO)
   snapshot.save()
 
   return snapshot
 }
-
 export function updateHourlySnapshot(snapshot: Snapshot): void {
-  let hourlySnapshot = getHourlySnapshot(snapshot.timestamp)
+  const hourlySnapshot = getHourlySnapshot(snapshot.timestamp)
   hourlySnapshot.totalReserve = snapshot.totalReserve
   hourlySnapshot.totalSupply = snapshot.totalSupply
   hourlySnapshot.priceShare = snapshot.priceShare
 
-  let snapshots = hourlySnapshot.snapshots
+  const snapshots = hourlySnapshot.snapshots
   snapshots.push(snapshot.id)
   hourlySnapshot.snapshots = snapshots
 
