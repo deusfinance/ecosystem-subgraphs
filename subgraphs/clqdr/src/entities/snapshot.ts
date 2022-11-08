@@ -17,7 +17,7 @@ export function createSnapshot(event: ethereum.Event): Snapshot {
   snapshot.timestamp = event.block.timestamp
   snapshot.totalReserve = convertAmountToDecimal(totalReserve, SCALE)
   snapshot.totalSupply = convertAmountToDecimal(totalSupply, SCALE)
-  snapshot.priceShare = convertAmountToDecimal(calculateRatio(totalReserve, totalSupply), BIG_INT_ZERO)
+  snapshot.priceShare = convertAmountToDecimal(calculateRatio(totalSupply, totalReserve), BIG_INT_ZERO)
   snapshot.save()
 
   return snapshot
@@ -54,9 +54,9 @@ function fetchTotalSupply(): BigInt {
   return contract.totalSupply()
 }
 
-function calculateRatio(totalReserve: BigInt, totalSupply: BigInt): BigInt {
+function calculateRatio(totalSupply: BigInt, totalReserve: BigInt): BigInt {
   if (totalReserve.isZero() || totalSupply.isZero()) {
     return BIG_INT_ZERO
   }
-  return totalReserve.div(totalSupply)
+  return totalSupply.div(totalReserve)
 }
