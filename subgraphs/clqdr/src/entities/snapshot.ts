@@ -1,10 +1,10 @@
-import {BigInt, ethereum} from '@graphprotocol/graph-ts'
-import {BIG_INT_ZERO, SCALE} from 'const'
+import {BigDecimal, BigInt, ethereum} from '@graphprotocol/graph-ts'
+import {BIG_DECIMAL_ZERO, SCALE} from 'const'
 
 import {CLQDR_ADDRESS} from '../../constants'
 import {PerpetualEscrowToken} from '../../generated/cLQDR/PerpetualEscrowToken'
-import {HourlySnapshot, Snapshot} from '../../generated/schema'
-import {convertAmountToDecimal} from '../helpers'
+import {DailySnapshot, HourlySnapshot, Snapshot} from '../../generated/schema'
+import {exponentToBigDecimal} from '../helpers'
 
 export function createSnapshot(event: ethereum.Event): Snapshot {
   const id = `${event.transaction.hash.toHexString()}-${event.logIndex.toString()}`
@@ -15,13 +15,14 @@ export function createSnapshot(event: ethereum.Event): Snapshot {
   snapshot.block = event.block.number
   snapshot.hash = event.transaction.hash
   snapshot.timestamp = event.block.timestamp
-  snapshot.totalReserve = convertAmountToDecimal(totalReserve, SCALE)
-  snapshot.totalSupply = convertAmountToDecimal(totalSupply, SCALE)
-  snapshot.priceShare = convertAmountToDecimal(calculateRatio(totalSupply, totalReserve), BIG_INT_ZERO)
+  snapshot.totalReserve = totalReserve.div(exponentToBigDecimal(SCALE))
+  snapshot.totalSupply = totalSupply.div(exponentToBigDecimal(SCALE))
+  snapshot.priceShare = calculateRatio(totalSupply, totalReserve)
   snapshot.save()
 
   return snapshot
 }
+
 export function updateHourlySnapshot(snapshot: Snapshot): void {
   const hourlySnapshot = getHourlySnapshot(snapshot.timestamp)
   hourlySnapshot.totalReserve = snapshot.totalReserve
@@ -44,19 +45,41 @@ function getHourlySnapshot(timestamp: BigInt): HourlySnapshot {
   return hourlySnapshot
 }
 
-function fetchTotalReserve(): BigInt {
-  const contract = PerpetualEscrowToken.bind(CLQDR_ADDRESS)
-  return contract.totalReserve()
+export function updateDailySnapshot(snapshot: Snapshot): void {
+  const dailySnapshot = getDailySnapshot(snapshot.timestamp)
+  dailySnapshot.totalReserve = snapshot.totalReserve
+  dailySnapshot.totalSupply = snapshot.totalSupply
+  dailySnapshot.priceShare = snapshot.priceShare
+
+  const snapshots = dailySnapshot.snapshots
+  snapshots.push(snapshot.id)
+  dailySnapshot.snapshots = snapshots
+
+  dailySnapshot.save()
 }
 
-function fetchTotalSupply(): BigInt {
-  const contract = PerpetualEscrowToken.bind(CLQDR_ADDRESS)
-  return contract.totalSupply()
+function getDailySnapshot(timestamp: BigInt): DailySnapshot {
+  const dailyId = ((timestamp.toI32() / 24) * 60 * 60).toString()
+  let dailySnapshot = DailySnapshot.load(dailyId)
+  if (!dailySnapshot) {
+    dailySnapshot = new DailySnapshot(dailyId)
+  }
+  return dailySnapshot
 }
 
-function calculateRatio(totalSupply: BigInt, totalReserve: BigInt): BigInt {
-  if (totalReserve.isZero() || totalSupply.isZero()) {
-    return BIG_INT_ZERO
+function fetchTotalReserve(): BigDecimal {
+  const contract = PerpetualEscrowToken.bind(CLQDR_ADDRESS)
+  return contract.totalReserve().toBigDecimal()
+}
+
+function fetchTotalSupply(): BigDecimal {
+  const contract = PerpetualEscrowToken.bind(CLQDR_ADDRESS)
+  return contract.totalSupply().toBigDecimal()
+}
+
+function calculateRatio(totalSupply: BigDecimal, totalReserve: BigDecimal): BigDecimal {
+  if (totalReserve.equals(BIG_DECIMAL_ZERO) || totalSupply.equals(BIG_DECIMAL_ZERO)) {
+    return BIG_DECIMAL_ZERO
   }
   return totalSupply.div(totalReserve)
 }

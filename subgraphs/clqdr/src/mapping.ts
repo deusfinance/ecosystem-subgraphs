@@ -1,5 +1,5 @@
 import {Transfer} from '../generated/cLQDR/PerpetualEscrowToken'
-import {createSnapshot, updateHourlySnapshot} from './entities'
+import {createSnapshot, updateDailySnapshot, updateHourlySnapshot} from './entities'
 import {updateLatest} from './entities/latest'
 
 export function handleTransfer(event: Transfer): void {
@@ -11,4 +11,5 @@ export function handleTransfer(event: Transfer): void {
 
   // Aggregate Snapshot into chunks
   updateHourlySnapshot(snapshot)
+  updateDailySnapshot(snapshot)
 }
