@@ -4,7 +4,7 @@ import {BIG_DECIMAL_ZERO, SCALE} from 'const'
 import {CLQDR_ADDRESS} from '../../constants'
 import {PerpetualEscrowToken} from '../../generated/cLQDR/PerpetualEscrowToken'
 import {DailySnapshot, HourlySnapshot, Snapshot} from '../../generated/schema'
-import {exponentToBigDecimal} from '../helpers'
+import {convertDecimalFromWei} from '../helpers'
 
 export function createSnapshot(event: ethereum.Event): Snapshot {
   const id = `${event.transaction.hash.toHexString()}-${event.logIndex.toString()}`
@@ -15,8 +15,8 @@ export function createSnapshot(event: ethereum.Event): Snapshot {
   snapshot.block = event.block.number
   snapshot.hash = event.transaction.hash
   snapshot.timestamp = event.block.timestamp
-  snapshot.totalReserve = totalReserve.div(exponentToBigDecimal(SCALE))
-  snapshot.totalSupply = totalSupply.div(exponentToBigDecimal(SCALE))
+  snapshot.totalReserve = convertDecimalFromWei(totalReserve, SCALE)
+  snapshot.totalSupply = convertDecimalFromWei(totalSupply, SCALE)
   snapshot.priceShare = calculateRatio(totalSupply, totalReserve)
   snapshot.save()
 
@@ -37,7 +37,7 @@ export function updateHourlySnapshot(snapshot: Snapshot): void {
 }
 
 function getHourlySnapshot(timestamp: BigInt): HourlySnapshot {
-  const hourlyId = (timestamp.toI32() / 3600).toString()
+  const hourlyId = (timestamp.toI32() / (60 * 60)).toString()
   let hourlySnapshot = HourlySnapshot.load(hourlyId)
   if (!hourlySnapshot) {
     hourlySnapshot = new HourlySnapshot(hourlyId)
@@ -59,7 +59,7 @@ export function updateDailySnapshot(snapshot: Snapshot): void {
 }
 
 function getDailySnapshot(timestamp: BigInt): DailySnapshot {
-  const dailyId = ((timestamp.toI32() / 24) * 60 * 60).toString()
+  const dailyId = (timestamp.toI32() / (24 * 60 * 60)).toString()
   let dailySnapshot = DailySnapshot.load(dailyId)
   if (!dailySnapshot) {
     dailySnapshot = new DailySnapshot(dailyId)

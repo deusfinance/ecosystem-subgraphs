@@ -15,3 +15,7 @@ export function convertAmountToDecimal(amount: BigInt, decimals: BigInt): BigDec
   }
   return amount.toBigDecimal().div(exponentToBigDecimal(decimals))
 }
+
+export function convertDecimalFromWei(amount: BigDecimal, decimals: BigInt): BigDecimal {
+  return amount.div(exponentToBigDecimal(decimals))
+}
