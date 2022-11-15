@@ -18,6 +18,7 @@ export function createSnapshot(event: ethereum.Event): Snapshot {
   snapshot.totalReserve = convertDecimalFromWei(totalReserve, SCALE)
   snapshot.totalSupply = convertDecimalFromWei(totalSupply, SCALE)
   snapshot.priceShare = calculateRatio(totalSupply, totalReserve)
+  snapshot.clqdrRatio = calculateRatio(totalReserve, totalSupply)
   snapshot.save()
 
   return snapshot
@@ -28,6 +29,7 @@ export function updateHourlySnapshot(snapshot: Snapshot): void {
   hourlySnapshot.totalReserve = snapshot.totalReserve
   hourlySnapshot.totalSupply = snapshot.totalSupply
   hourlySnapshot.priceShare = snapshot.priceShare
+  hourlySnapshot.clqdrRatio = snapshot.clqdrRatio
 
   const snapshots = hourlySnapshot.snapshots
   snapshots.push(snapshot.id)
@@ -50,6 +52,7 @@ export function updateDailySnapshot(snapshot: Snapshot): void {
   dailySnapshot.totalReserve = snapshot.totalReserve
   dailySnapshot.totalSupply = snapshot.totalSupply
   dailySnapshot.priceShare = snapshot.priceShare
+  dailySnapshot.clqdrRatio = snapshot.clqdrRatio
 
   const snapshots = dailySnapshot.snapshots
   snapshots.push(snapshot.id)
@@ -77,9 +80,9 @@ function fetchTotalSupply(): BigDecimal {
   return contract.totalSupply().toBigDecimal()
 }
 
-function calculateRatio(totalSupply: BigDecimal, totalReserve: BigDecimal): BigDecimal {
-  if (totalReserve.equals(BIG_DECIMAL_ZERO) || totalSupply.equals(BIG_DECIMAL_ZERO)) {
+function calculateRatio(a: BigDecimal, b: BigDecimal): BigDecimal {
+  if (a.equals(BIG_DECIMAL_ZERO) || b.equals(BIG_DECIMAL_ZERO)) {
     return BIG_DECIMAL_ZERO
   }
-  return totalSupply.div(totalReserve)
+  return a.div(b)
 }
