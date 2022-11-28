@@ -1,5 +1,5 @@
 {
-  "name": "synchronizer",
+  "name": "poolstats",
   "private": true,
   "license": "MIT",
   "version": "1.0.0",
@@ -7,9 +7,9 @@
   "scripts": {
     "codegen": "graph codegen --output-dir ./generated/",
     "build": "graph build",
-    "create-local": "graph create --node http://localhost:8020/ /deusfinance/synchronizer",
-    "remove-local": "graph remove --node http://localhost:8020/ /deusfinance/synchronizer",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 /deusfinance/synchronizer",
+    "create-local": "graph create --node http://localhost:8020/ /deusfinance/poolstats",
+    "remove-local": "graph remove --node http://localhost:8020/ /deusfinance/poolstats",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 /deusfinance/poolstats",
     "deploy:fantom": "graph deploy deusfinance/poolstats --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ --debug",
     "prepare:fantom": "mustache ./config/fantom.json template.yaml > subgraph.yaml && mustache ./config/fantom.json ./constants/template.ts > ./constants/index.ts"
   }

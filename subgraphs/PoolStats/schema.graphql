@@ -1,0 +1,18 @@
+type VDeusPoolLatestSnapshot @entity {
+  id: ID!
+  vDeusBalance: BigDecimal!
+  deusBalance: BigDecimal!
+  vDeusDeusRatio: BigDecimal!
+  deusVDeusRatio: BigDecimal!
+}
+
+type VDeusPoolSnapshot @entity {
+  id: ID!
+  block: BigInt!
+  hash: Bytes!
+  timestamp: BigInt!
+  vDeusBalance: BigDecimal!
+  deusBalance: BigDecimal!
+  vDeusDeusRatio: BigDecimal!
+  deusVDeusRatio: BigDecimal!
+}

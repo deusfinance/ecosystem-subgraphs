@@ -1,0 +1,30 @@
+specVersion: 0.0.4
+description: Analytics for the DEUS Pools.
+repository: https://github.com/deusfinance/ecosystem-subgraphs/tree/main/subgraphs/PoolStats
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Factory
+    network: '{{ network }}'
+    source:
+      address: '{{ swapFlashLoan }}'
+      abi: SwapFlashLoan
+      startBlock: {{swapFlashLoanStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mapping.ts
+      entities:
+        - Snapshot
+      abis:
+        - name: SwapFlashLoan
+          file: ./abis/SwapFlashLoan.json
+      eventHandlers:
+        - event: TokenSwap(indexed address,uint256,uint256,uint128,uint128)
+          handler: handleVdeusTokenSwap
+        - event: AddLiquidity(indexed address,uint256[],uint256[],uint256,uint256)
+          handler: handleVdeusAddLiquidity
+        - event: RemoveLiquidity(indexed address,uint256[],uint256)
+          handler: handleVdeusRemoveLiquidity

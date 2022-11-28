@@ -1,0 +1,5 @@
+import {Address} from '@graphprotocol/graph-ts'
+
+export const VDEUS_POOL_FACTORY_ADDRESS: Address = Address.fromString('0x54a5039C403fff8538fC582e0e3f07387B707381')
+export const VDEUS_TOKEN_ADDRESS: Address = Address.fromString('0x953Cd009a490176FcEB3a26b9753e6F01645ff28')
+export const DEUS_TOKEN_ADDRESS: Address = Address.fromString('0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44')
