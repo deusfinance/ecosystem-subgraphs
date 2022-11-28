@@ -3,10 +3,11 @@ import {Latest, Snapshot} from '../../generated/schema'
 const LATEST_ID = 'latest'
 
 export function updateLatest(snapshot: Snapshot): void {
-  let latest = getLatest()
+  const latest = getLatest()
   latest.totalReserve = snapshot.totalReserve
   latest.totalSupply = snapshot.totalSupply
   latest.priceShare = snapshot.priceShare
+  latest.clqdrRatio = snapshot.clqdrRatio
   latest.save()
 }
 

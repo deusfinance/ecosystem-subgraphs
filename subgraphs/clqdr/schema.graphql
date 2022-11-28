@@ -3,6 +3,7 @@ type Latest @entity {
   totalReserve: BigDecimal!
   totalSupply: BigDecimal!
   priceShare: BigDecimal!
+  clqdrRatio: BigDecimal!
 }
 
 type Snapshot @entity {
@@ -13,6 +14,7 @@ type Snapshot @entity {
   totalReserve: BigDecimal!
   totalSupply: BigDecimal!
   priceShare: BigDecimal!
+  clqdrRatio: BigDecimal!
 }
 
 type HourlySnapshot @entity {
@@ -21,4 +23,14 @@ type HourlySnapshot @entity {
   totalSupply: BigDecimal!
   priceShare: BigDecimal!
   snapshots: [Snapshot!]!
+  clqdrRatio: BigDecimal!
+}
+
+type DailySnapshot @entity {
+  id: ID!
+  totalReserve: BigDecimal!
+  totalSupply: BigDecimal!
+  priceShare: BigDecimal!
+  snapshots: [Snapshot!]!
+  clqdrRatio: BigDecimal!
 }
