@@ -1,0 +1,27 @@
+specVersion: 0.0.4
+description: cLQDR Subgraphs
+repository: https://github.com/deusfinance/ecosystem-subgraphs/tree/main/subgraphs/clqdr
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: cLQDR
+    network: '{{ network }}'
+    source:
+      address: '{{ clqdrAddress }}'
+      abi: PerpetualEscrowToken
+      startBlock: {{clqdrStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mapping.ts
+      entities:
+        - Latest
+        - Snapshot
+      abis:
+        - name: PerpetualEscrowToken
+          file: ./abis/PerpetualEscrowToken.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
