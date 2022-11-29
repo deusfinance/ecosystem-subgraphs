@@ -2,8 +2,8 @@ type VDeusPoolLatestSnapshot @entity {
   id: ID!
   vDeusBalance: BigDecimal!
   deusBalance: BigDecimal!
-  vDeusDeusRatio: BigDecimal!
-  deusVDeusRatio: BigDecimal!
+  vDeusPerDeus: BigDecimal!
+  deusPerVDeus: BigDecimal!
 }
 
 type VDeusPoolSnapshot @entity {
@@ -13,6 +13,6 @@ type VDeusPoolSnapshot @entity {
   timestamp: BigInt!
   vDeusBalance: BigDecimal!
   deusBalance: BigDecimal!
-  vDeusDeusRatio: BigDecimal!
-  deusVDeusRatio: BigDecimal!
+  vDeusPerDeus: BigDecimal!
+  deusPerVDeus: BigDecimal!
 }

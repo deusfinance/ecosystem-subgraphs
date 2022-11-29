@@ -1,4 +1,4 @@
-import {BigDecimal, ethereum} from '@graphprotocol/graph-ts'
+import {BigDecimal, BigInt, ethereum, log} from '@graphprotocol/graph-ts'
 import {BIG_DECIMAL_ZERO, SCALE} from 'const'
 import {DEUS_TOKEN_ADDRESS, VDEUS_POOL_FACTORY_ADDRESS, VDEUS_TOKEN_ADDRESS} from '../../constants'
 import {SwapFlashLoan} from '../../generated/Factory/SwapFlashLoan'
@@ -17,8 +17,8 @@ export function createVdeusPoolSnapshot(event: ethereum.Event): VDeusPoolSnapsho
   snapshot.timestamp = event.block.timestamp
   snapshot.vDeusBalance = convertDecimalFromWei(vDeusBalance, SCALE)
   snapshot.deusBalance = convertDecimalFromWei(deusBalance, SCALE)
-  snapshot.vDeusDeusRatio = calculateRatio(vDeusBalance, deusBalance)
-  snapshot.deusVDeusRatio = calculateRatio(deusBalance, vDeusBalance)
+  snapshot.vDeusPerDeus = fetchVDeusPerDeusSwapRatio()
+  snapshot.deusPerVDeus = fetchDeusPerVDeusSwapRatio()
   snapshot.save()
 
   return snapshot
@@ -36,9 +36,30 @@ function fetchDeusBalance(): BigDecimal {
   return contract.getTokenBalance(deusTokenId).toBigDecimal()
 }
 
-function calculateRatio(a: BigDecimal, b: BigDecimal): BigDecimal {
-  if (a.equals(BIG_DECIMAL_ZERO) || b.equals(BIG_DECIMAL_ZERO)) {
-    return BIG_DECIMAL_ZERO
+function fetchVDeusPerDeusSwapRatio(): BigDecimal {
+  const contract = SwapFlashLoan.bind(VDEUS_POOL_FACTORY_ADDRESS)
+  const vDeusTokenId = contract.getTokenIndex(VDEUS_TOKEN_ADDRESS)
+  const deusTokenId = contract.getTokenIndex(DEUS_TOKEN_ADDRESS)
+  const multiplyingFactor = new BigInt(10000)
+  const callResult = contract.try_calculateSwap(deusTokenId, vDeusTokenId, multiplyingFactor)
+  if (callResult.reverted) {
+    log.info('try_calculateSwap reverted', [])
+  } else {
+    return callResult.value.toBigDecimal()
   }
-  return a.div(b)
+  return BIG_DECIMAL_ZERO
+}
+
+function fetchDeusPerVDeusSwapRatio(): BigDecimal {
+  const contract = SwapFlashLoan.bind(VDEUS_POOL_FACTORY_ADDRESS)
+  const vDeusTokenId = contract.getTokenIndex(VDEUS_TOKEN_ADDRESS)
+  const deusTokenId = contract.getTokenIndex(DEUS_TOKEN_ADDRESS)
+  const multiplyingFactor = new BigInt(10000)
+  const callResult = contract.try_calculateSwap(vDeusTokenId, deusTokenId, multiplyingFactor)
+  if (callResult.reverted) {
+    log.info('try_calculateSwap reverted', [])
+  } else {
+    return callResult.value.toBigDecimal()
+  }
+  return BIG_DECIMAL_ZERO
 }

@@ -6,8 +6,8 @@ export function updateLatestVdeusPool(snapshot: VDeusPoolSnapshot): void {
   const latest = getLatest()
   latest.vDeusBalance = snapshot.vDeusBalance
   latest.deusBalance = snapshot.deusBalance
-  latest.vDeusDeusRatio = snapshot.vDeusDeusRatio
-  latest.deusVDeusRatio = snapshot.deusVDeusRatio
+  latest.vDeusPerDeus = snapshot.vDeusPerDeus
+  latest.deusPerVDeus = snapshot.deusPerVDeus
   latest.save()
 }
 
