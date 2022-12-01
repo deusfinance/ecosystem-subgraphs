@@ -1,12 +1,6 @@
-import {BigDecimal, BigInt, ethereum, log} from '@graphprotocol/graph-ts'
+import {BigDecimal, ethereum} from '@graphprotocol/graph-ts'
 import {BIG_DECIMAL_ZERO, SCALE} from 'const'
-import {
-  DEUS_TOKEN_ADDRESS,
-  DEUS_TOKEN_INDEX,
-  VDEUS_POOL_FACTORY_ADDRESS,
-  VDEUS_TOKEN_ADDRESS,
-  VDEUS_TOKEN_INDEX,
-} from '../../constants'
+import {DEUS_TOKEN_ADDRESS, VDEUS_POOL_FACTORY_ADDRESS, VDEUS_TOKEN_ADDRESS} from '../../constants'
 import {SwapFlashLoan} from '../../generated/Factory/SwapFlashLoan'
 
 import {VDeusPoolSnapshot} from '../../generated/schema'
@@ -23,8 +17,8 @@ export function createVdeusPoolSnapshot(event: ethereum.Event): VDeusPoolSnapsho
   snapshot.timestamp = event.block.timestamp
   snapshot.vDeusBalance = convertDecimalFromWei(vDeusBalance, SCALE)
   snapshot.deusBalance = convertDecimalFromWei(deusBalance, SCALE)
-  snapshot.vDeusPerDeus = fetchVDeusPerDeusSwapRatio()
-  snapshot.deusPerVDeus = fetchDeusPerVDeusSwapRatio()
+  snapshot.vDeusPerDeus = calculateRatio(vDeusBalance, deusBalance)
+  snapshot.deusPerVDeus = calculateRatio(deusBalance, vDeusBalance)
   snapshot.save()
 
   return snapshot
@@ -42,28 +36,9 @@ function fetchDeusBalance(): BigDecimal {
   return contract.getTokenBalance(deusTokenId).toBigDecimal()
 }
 
-function fetchVDeusPerDeusSwapRatio(): BigDecimal {
-  const contract = SwapFlashLoan.bind(VDEUS_POOL_FACTORY_ADDRESS)
-  const callResult = contract.try_calculateSwap(DEUS_TOKEN_INDEX, VDEUS_TOKEN_INDEX, SCALE)
-
-  if (callResult.reverted) {
-    log.info('try_calculateSwap reverted', [])
-  } else {
-    return callResult.value.toBigDecimal()
+function calculateRatio(a: BigDecimal, b: BigDecimal): BigDecimal {
+  if (a.equals(BIG_DECIMAL_ZERO) || b.equals(BIG_DECIMAL_ZERO)) {
+    return BIG_DECIMAL_ZERO
   }
-
-  return BIG_DECIMAL_ZERO
-}
-
-function fetchDeusPerVDeusSwapRatio(): BigDecimal {
-  const contract = SwapFlashLoan.bind(VDEUS_POOL_FACTORY_ADDRESS)
-  const callResult = contract.try_calculateSwap(VDEUS_TOKEN_INDEX, DEUS_TOKEN_INDEX, SCALE)
-
-  if (callResult.reverted) {
-    log.info('try_calculateSwap reverted', [])
-  } else {
-    return callResult.value.toBigDecimal()
-  }
-
-  return BIG_DECIMAL_ZERO
+  return a.div(b)
 }
