@@ -1,0 +1,36 @@
+type Latest @entity {
+  id: ID!
+  totalReserve: BigDecimal!
+  totalSupply: BigDecimal!
+  priceShare: BigDecimal!
+  clqdrRatio: BigDecimal!
+}
+
+type Snapshot @entity {
+  id: ID!
+  block: BigInt!
+  hash: Bytes!
+  timestamp: BigInt!
+  totalReserve: BigDecimal!
+  totalSupply: BigDecimal!
+  priceShare: BigDecimal!
+  clqdrRatio: BigDecimal!
+}
+
+type HourlySnapshot @entity {
+  id: ID!
+  totalReserve: BigDecimal!
+  totalSupply: BigDecimal!
+  priceShare: BigDecimal!
+  snapshots: [Snapshot!]!
+  clqdrRatio: BigDecimal!
+}
+
+type DailySnapshot @entity {
+  id: ID!
+  totalReserve: BigDecimal!
+  totalSupply: BigDecimal!
+  priceShare: BigDecimal!
+  snapshots: [Snapshot!]!
+  clqdrRatio: BigDecimal!
+}
