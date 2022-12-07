@@ -17,6 +17,24 @@ type VDeusPoolSnapshot @entity {
   deusPerVDeus: BigDecimal!
 }
 
+type VDeusPoolHourlySnapshot @entity {
+  id: ID!
+  vDeusBalance: BigDecimal!
+  deusBalance: BigDecimal!
+  vDeusPerDeus: BigDecimal!
+  deusPerVDeus: BigDecimal!
+  snapshots: [VDeusPoolSnapshot!]!
+}
+
+type VDeusPoolDailySnapshot @entity {
+  id: ID!
+  vDeusBalance: BigDecimal!
+  deusBalance: BigDecimal!
+  vDeusPerDeus: BigDecimal!
+  deusPerVDeus: BigDecimal!
+  snapshots: [VDeusPoolSnapshot!]!
+}
+
 type BDeiPoolLatestSnapshot @entity {
   id: ID!
   bDeiBalance: BigDecimal!
@@ -36,20 +54,20 @@ type BDeiPoolSnapshot @entity {
   deiPerBDei: BigDecimal!
 }
 
-type VDeusPoolHourlySnapshot @entity {
+type BDeiPoolHourlySnapshot @entity {
   id: ID!
-  vDeusBalance: BigDecimal!
-  deusBalance: BigDecimal!
-  vDeusPerDeus: BigDecimal!
-  deusPerVDeus: BigDecimal!
-  snapshots: [VDeusPoolSnapshot!]!
+  bDeiBalance: BigDecimal!
+  deiBalance: BigDecimal!
+  bDeiPerDei: BigDecimal!
+  deiPerBDei: BigDecimal!
+  snapshots: [BDeiPoolSnapshot!]!
 }
 
-type VDeusPoolDailySnapshot @entity {
+type BDeiPoolDailySnapshot @entity {
   id: ID!
-  vDeusBalance: BigDecimal!
-  deusBalance: BigDecimal!
-  vDeusPerDeus: BigDecimal!
-  deusPerVDeus: BigDecimal!
-  snapshots: [VDeusPoolSnapshot!]!
+  bDeiBalance: BigDecimal!
+  deiBalance: BigDecimal!
+  bDeiPerDei: BigDecimal!
+  deiPerBDei: BigDecimal!
+  snapshots: [BDeiPoolSnapshot!]!
 }

@@ -46,6 +46,8 @@ dataSources:
       entities:
         - BDeiPoolLatestSnapshot
         - BDeiPoolSnapshot
+        - BDeiPoolHourlySnapshot
+        - BDeiPoolDailySnapshot
       abis:
         - name: SwapFlashLoan
           file: ./abis/SwapFlashLoan.json

@@ -24,6 +24,10 @@ export function handleVdeusAddLiquidity(event: AddLiquidity): void {
 
   // Update Latest entity
   updateLatestVdeusPool(snapshot)
+
+  // Aggregate Snapshot into chunks
+  updateVDeusPoolHourlySnapshot(snapshot)
+  updateVDeusPoolDailySnapshot(snapshot)
 }
 
 export function handleVdeusRemoveLiquidity(event: RemoveLiquidity): void {
@@ -32,4 +36,8 @@ export function handleVdeusRemoveLiquidity(event: RemoveLiquidity): void {
 
   // Update Latest entity
   updateLatestVdeusPool(snapshot)
+
+  // Aggregate Snapshot into chunks
+  updateVDeusPoolHourlySnapshot(snapshot)
+  updateVDeusPoolDailySnapshot(snapshot)
 }

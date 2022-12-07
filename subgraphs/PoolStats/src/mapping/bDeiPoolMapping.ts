@@ -1,5 +1,10 @@
 import {AddLiquidity, RemoveLiquidity, TokenSwap} from '../../generated/bDeiPoolFactory/SwapFlashLoan'
-import {createBDeiPoolSnapshot, updateLatestBDeiPool} from '../entities'
+import {
+  createBDeiPoolSnapshot,
+  updateBDeiPoolDailySnapshot,
+  updateBDeiPoolHourlySnapshot,
+  updateLatestBDeiPool,
+} from '../entities'
 
 export function handleBDeiTokenSwap(event: TokenSwap): void {
   // Create a Snapshot
@@ -8,9 +13,9 @@ export function handleBDeiTokenSwap(event: TokenSwap): void {
   // Update Latest entity
   updateLatestBDeiPool(snapshot)
 
-  // // Aggregate Snapshot into chunks
-  // updateHourlySnapshot(snapshot)
-  // updateDailySnapshot(snapshot)
+  // Aggregate Snapshot into chunks
+  updateBDeiPoolHourlySnapshot(snapshot)
+  updateBDeiPoolDailySnapshot(snapshot)
 }
 
 export function handleBDeiAddLiquidity(event: AddLiquidity): void {
@@ -19,6 +24,10 @@ export function handleBDeiAddLiquidity(event: AddLiquidity): void {
 
   // Update Latest entity
   updateLatestBDeiPool(snapshot)
+
+  // Aggregate Snapshot into chunks
+  updateBDeiPoolHourlySnapshot(snapshot)
+  updateBDeiPoolDailySnapshot(snapshot)
 }
 
 export function handleBDeiRemoveLiquidity(event: RemoveLiquidity): void {
@@ -27,4 +36,8 @@ export function handleBDeiRemoveLiquidity(event: RemoveLiquidity): void {
 
   // Update Latest entity
   updateLatestBDeiPool(snapshot)
+
+  // Aggregate Snapshot into chunks
+  updateBDeiPoolHourlySnapshot(snapshot)
+  updateBDeiPoolDailySnapshot(snapshot)
 }
