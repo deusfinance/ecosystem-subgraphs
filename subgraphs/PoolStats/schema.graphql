@@ -16,3 +16,22 @@ type VDeusPoolSnapshot @entity {
   vDeusPerDeus: BigDecimal!
   deusPerVDeus: BigDecimal!
 }
+
+type BDeiPoolLatestSnapshot @entity {
+  id: ID!
+  bDeiBalance: BigDecimal!
+  deiBalance: BigDecimal!
+  bDeiPerDei: BigDecimal!
+  deiPerBDei: BigDecimal!
+}
+
+type BDeiPoolSnapshot @entity {
+  id: ID!
+  block: BigInt!
+  hash: Bytes!
+  timestamp: BigInt!
+  bDeiBalance: BigDecimal!
+  deiBalance: BigDecimal!
+  bDeiPerDei: BigDecimal!
+  deiPerBDei: BigDecimal!
+}

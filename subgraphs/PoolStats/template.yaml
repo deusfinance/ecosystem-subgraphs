@@ -5,19 +5,20 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: Factory
+    name: vDeusPoolFactory
     network: '{{ network }}'
     source:
-      address: '{{ swapFlashLoan }}'
+      address: '{{ vDeusPoolAddress }}'
       abi: SwapFlashLoan
-      startBlock: {{swapFlashLoanStartBlock}}
+      startBlock: {{vDeusPoolAddressStartBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ./src/mapping.ts
       entities:
-        - Snapshot
+        - VDeusPoolLatestSnapshot
+        - VDeusPoolSnapshot
       abis:
         - name: SwapFlashLoan
           file: ./abis/SwapFlashLoan.json
@@ -28,3 +29,28 @@ dataSources:
           handler: handleVdeusAddLiquidity
         - event: RemoveLiquidity(indexed address,uint256[],uint256)
           handler: handleVdeusRemoveLiquidity
+  - kind: ethereum/contract
+    name: bDeiPoolFactory
+    network: '{{ network }}'
+    source:
+      address: '{{ bDeiPoolAddress }}'
+      abi: SwapFlashLoan
+      startBlock: {{bDeiPoolAddressStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mapping.ts
+      entities:
+        - BDeiPoolLatestSnapshot
+        - BDeiPoolSnapshot
+      abis:
+        - name: SwapFlashLoan
+          file: ./abis/SwapFlashLoan.json
+      eventHandlers:
+        - event: TokenSwap(indexed address,uint256,uint256,uint128,uint128)
+          handler: handleBDeiTokenSwap
+        - event: AddLiquidity(indexed address,uint256[],uint256[],uint256,uint256)
+          handler: handleBDeiAddLiquidity
+        - event: RemoveLiquidity(indexed address,uint256[],uint256)
+          handler: handleBDeiRemoveLiquidity

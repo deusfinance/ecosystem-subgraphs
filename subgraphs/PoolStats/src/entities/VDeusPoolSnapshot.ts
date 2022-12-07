@@ -1,6 +1,6 @@
 import {BigDecimal, ethereum} from '@graphprotocol/graph-ts'
 import {BIG_DECIMAL_ZERO, SCALE} from 'const'
-import {DEUS_TOKEN_ADDRESS, VDEUS_POOL_FACTORY_ADDRESS, VDEUS_TOKEN_ADDRESS} from '../../constants'
+import {DEUS_TOKEN_INDEX, VDEUS_POOL_FACTORY_ADDRESS, VDEUS_TOKEN_INDEX} from '../../constants'
 import {SwapFlashLoan} from '../../generated/Factory/SwapFlashLoan'
 
 import {VDeusPoolSnapshot} from '../../generated/schema'
@@ -26,14 +26,12 @@ export function createVdeusPoolSnapshot(event: ethereum.Event): VDeusPoolSnapsho
 
 function fetchVdeusBalance(): BigDecimal {
   const contract = SwapFlashLoan.bind(VDEUS_POOL_FACTORY_ADDRESS)
-  const vDeusTokenId = contract.getTokenIndex(VDEUS_TOKEN_ADDRESS)
-  return contract.getTokenBalance(vDeusTokenId).toBigDecimal()
+  return contract.getTokenBalance(VDEUS_TOKEN_INDEX).toBigDecimal()
 }
 
 function fetchDeusBalance(): BigDecimal {
   const contract = SwapFlashLoan.bind(VDEUS_POOL_FACTORY_ADDRESS)
-  const deusTokenId = contract.getTokenIndex(DEUS_TOKEN_ADDRESS)
-  return contract.getTokenBalance(deusTokenId).toBigDecimal()
+  return contract.getTokenBalance(DEUS_TOKEN_INDEX).toBigDecimal()
 }
 
 function calculateRatio(a: BigDecimal, b: BigDecimal): BigDecimal {
