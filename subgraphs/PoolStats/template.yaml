@@ -1,0 +1,60 @@
+specVersion: 0.0.4
+description: Analytics for the DEUS Pools.
+repository: https://github.com/deusfinance/ecosystem-subgraphs/tree/main/subgraphs/PoolStats
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: vDeusPoolFactory
+    network: '{{ network }}'
+    source:
+      address: '{{ vDeusPoolAddress }}'
+      abi: SwapFlashLoan
+      startBlock: {{vDeusPoolAddressStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mapping/index.ts
+      entities:
+        - VDeusPoolLatestSnapshot
+        - VDeusPoolSnapshot
+        - VDeusPoolHourlySnapshot
+        - VDeusPoolDailySnapshot
+      abis:
+        - name: SwapFlashLoan
+          file: ./abis/SwapFlashLoan.json
+      eventHandlers:
+        - event: TokenSwap(indexed address,uint256,uint256,uint128,uint128)
+          handler: handleVdeusTokenSwap
+        - event: AddLiquidity(indexed address,uint256[],uint256[],uint256,uint256)
+          handler: handleVdeusAddLiquidity
+        - event: RemoveLiquidity(indexed address,uint256[],uint256)
+          handler: handleVdeusRemoveLiquidity
+  - kind: ethereum/contract
+    name: bDeiPoolFactory
+    network: '{{ network }}'
+    source:
+      address: '{{ bDeiPoolAddress }}'
+      abi: SwapFlashLoan
+      startBlock: {{bDeiPoolAddressStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mapping/index.ts
+      entities:
+        - BDeiPoolLatestSnapshot
+        - BDeiPoolSnapshot
+        - BDeiPoolHourlySnapshot
+        - BDeiPoolDailySnapshot
+      abis:
+        - name: SwapFlashLoan
+          file: ./abis/SwapFlashLoan.json
+      eventHandlers:
+        - event: TokenSwap(indexed address,uint256,uint256,uint128,uint128)
+          handler: handleBDeiTokenSwap
+        - event: AddLiquidity(indexed address,uint256[],uint256[],uint256,uint256)
+          handler: handleBDeiAddLiquidity
+        - event: RemoveLiquidity(indexed address,uint256[],uint256)
+          handler: handleBDeiRemoveLiquidity
