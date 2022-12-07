@@ -1,7 +1,7 @@
 import {BigDecimal, ethereum} from '@graphprotocol/graph-ts'
 import {BIG_DECIMAL_ZERO, SCALE} from 'const'
 import {BDEI_POOL_FACTORY_ADDRESS, BDEI_TOKEN_INDEX, DEI_TOKEN_INDEX} from '../../constants'
-import {SwapFlashLoan} from '../../generated/Factory/SwapFlashLoan'
+import {SwapFlashLoan} from '../../generated/bDeiPoolFactory/SwapFlashLoan'
 
 import {BDeiPoolSnapshot} from '../../generated/schema'
 import {convertDecimalFromWei} from '../helpers'

@@ -15,10 +15,12 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
-      file: ./src/mapping.ts
+      file: ./src/mapping/index.ts
       entities:
         - VDeusPoolLatestSnapshot
         - VDeusPoolSnapshot
+        - VDeusPoolHourlySnapshot
+        - VDeusPoolDailySnapshot
       abis:
         - name: SwapFlashLoan
           file: ./abis/SwapFlashLoan.json
@@ -40,7 +42,7 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
-      file: ./src/mapping.ts
+      file: ./src/mapping/index.ts
       entities:
         - BDeiPoolLatestSnapshot
         - BDeiPoolSnapshot

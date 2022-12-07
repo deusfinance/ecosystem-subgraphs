@@ -35,3 +35,21 @@ type BDeiPoolSnapshot @entity {
   bDeiPerDei: BigDecimal!
   deiPerBDei: BigDecimal!
 }
+
+type VDeusPoolHourlySnapshot @entity {
+  id: ID!
+  vDeusBalance: BigDecimal!
+  deusBalance: BigDecimal!
+  vDeusPerDeus: BigDecimal!
+  deusPerVDeus: BigDecimal!
+  snapshots: [VDeusPoolSnapshot!]!
+}
+
+type VDeusPoolDailySnapshot @entity {
+  id: ID!
+  vDeusBalance: BigDecimal!
+  deusBalance: BigDecimal!
+  vDeusPerDeus: BigDecimal!
+  deusPerVDeus: BigDecimal!
+  snapshots: [VDeusPoolSnapshot!]!
+}
