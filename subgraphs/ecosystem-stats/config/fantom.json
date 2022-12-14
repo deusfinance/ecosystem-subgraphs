@@ -1,0 +1,6 @@
+{
+  "network": "fantom",
+  "chainId": "250",
+  "deiStrategy": "0x02ee9b45a72DA0Ebb5F23984c161D1ce14490f14",
+  "deiStrategyStartBlock": "44634289"
+}

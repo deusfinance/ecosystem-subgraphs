@@ -1,0 +1,29 @@
+specVersion: 0.0.4
+description: Deus Ecosystem Stats Subgraph
+repository: https://github.com/deusfinance/ecosystem-subgraphs/tree/main/subgraphs/ecosystem-stats
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: DEIStrategy
+    network: '{{ network }}'
+    source:
+      address: '{{ deiStrategy }}'
+      abi: DEIStrategy
+      startBlock: {{deiStrategyStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mapping.ts
+      entities:
+        - LatestDEIRatioSnapshot
+        - DEIRatioSnapshot
+        - HourlyDEIRatioSnapshot
+        - DailyDEIRatioSnapshot
+      abis:
+        - name: DEIStrategy
+          file: ./abis/DEIStrategy.json
+      eventHandlers:
+        - event: SetRedeemCollateralRatio(uint256,uint256)
+          handler: handleSetRedeemCollateralRatio
