@@ -43,6 +43,7 @@ function getHourlySnapshot(timestamp: BigInt): HourlySnapshot {
   let hourlySnapshot = HourlySnapshot.load(hourlyId)
   if (!hourlySnapshot) {
     hourlySnapshot = new HourlySnapshot(hourlyId)
+    hourlySnapshot.timestamp = timestamp
   }
   return hourlySnapshot
 }
@@ -66,6 +67,7 @@ function getDailySnapshot(timestamp: BigInt): DailySnapshot {
   let dailySnapshot = DailySnapshot.load(dailyId)
   if (!dailySnapshot) {
     dailySnapshot = new DailySnapshot(dailyId)
+    dailySnapshot.timestamp = timestamp
   }
   return dailySnapshot
 }
