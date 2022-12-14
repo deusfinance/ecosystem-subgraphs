@@ -1,0 +1,73 @@
+type VDeusPoolLatestSnapshot @entity {
+  id: ID!
+  vDeusBalance: BigDecimal!
+  deusBalance: BigDecimal!
+  vDeusPerDeus: BigDecimal!
+  deusPerVDeus: BigDecimal!
+}
+
+type VDeusPoolSnapshot @entity {
+  id: ID!
+  block: BigInt!
+  hash: Bytes!
+  timestamp: BigInt!
+  vDeusBalance: BigDecimal!
+  deusBalance: BigDecimal!
+  vDeusPerDeus: BigDecimal!
+  deusPerVDeus: BigDecimal!
+}
+
+type VDeusPoolHourlySnapshot @entity {
+  id: ID!
+  vDeusBalance: BigDecimal!
+  deusBalance: BigDecimal!
+  vDeusPerDeus: BigDecimal!
+  deusPerVDeus: BigDecimal!
+  snapshots: [VDeusPoolSnapshot!]!
+}
+
+type VDeusPoolDailySnapshot @entity {
+  id: ID!
+  vDeusBalance: BigDecimal!
+  deusBalance: BigDecimal!
+  vDeusPerDeus: BigDecimal!
+  deusPerVDeus: BigDecimal!
+  snapshots: [VDeusPoolSnapshot!]!
+}
+
+type BDeiPoolLatestSnapshot @entity {
+  id: ID!
+  bDeiBalance: BigDecimal!
+  deiBalance: BigDecimal!
+  bDeiPerDei: BigDecimal!
+  deiPerBDei: BigDecimal!
+}
+
+type BDeiPoolSnapshot @entity {
+  id: ID!
+  block: BigInt!
+  hash: Bytes!
+  timestamp: BigInt!
+  bDeiBalance: BigDecimal!
+  deiBalance: BigDecimal!
+  bDeiPerDei: BigDecimal!
+  deiPerBDei: BigDecimal!
+}
+
+type BDeiPoolHourlySnapshot @entity {
+  id: ID!
+  bDeiBalance: BigDecimal!
+  deiBalance: BigDecimal!
+  bDeiPerDei: BigDecimal!
+  deiPerBDei: BigDecimal!
+  snapshots: [BDeiPoolSnapshot!]!
+}
+
+type BDeiPoolDailySnapshot @entity {
+  id: ID!
+  bDeiBalance: BigDecimal!
+  deiBalance: BigDecimal!
+  bDeiPerDei: BigDecimal!
+  deiPerBDei: BigDecimal!
+  snapshots: [BDeiPoolSnapshot!]!
+}
