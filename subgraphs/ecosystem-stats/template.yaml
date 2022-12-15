@@ -47,6 +47,8 @@ dataSources:
       abis:
         - name: DEIStablecoin
           file: ./abis/DEIStablecoin.json
+        - name: USDC
+          file: ./abis/USDC.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleDeiTransfer

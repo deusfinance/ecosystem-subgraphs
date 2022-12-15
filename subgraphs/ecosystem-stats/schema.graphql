@@ -32,6 +32,8 @@ type DailyDEIRatioSnapshot @entity {
 type LatestDEISupplySnapshot @entity {
   id: ID!
   deiSupply: BigDecimal!
+  collaterizationRatio: BigDecimal!
+  totalUSDCReserves: BigDecimal!
 }
 
 type DEISupplySnapshot @entity {
@@ -39,6 +41,8 @@ type DEISupplySnapshot @entity {
   block: BigInt!
   hash: Bytes!
   timestamp: BigInt!
+  collaterizationRatio: BigDecimal!
+  totalUSDCReserves: BigDecimal!
   deiSupply: BigDecimal!
 }
 
@@ -46,6 +50,8 @@ type HourlyDEISupplySnapshot @entity {
   id: ID!
   timestamp: BigInt!
   deiSupply: BigDecimal!
+  collaterizationRatio: BigDecimal!
+  totalUSDCReserves: BigDecimal!
   snapshots: [DEISupplySnapshot!]!
 }
 
@@ -53,5 +59,7 @@ type DailyDEISupplySnapshot @entity {
   id: ID!
   timestamp: BigInt!
   deiSupply: BigDecimal!
+  collaterizationRatio: BigDecimal!
+  totalUSDCReserves: BigDecimal!
   snapshots: [DEISupplySnapshot!]!
 }
