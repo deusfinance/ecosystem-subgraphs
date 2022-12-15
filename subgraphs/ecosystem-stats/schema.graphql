@@ -28,3 +28,30 @@ type DailyDEIRatioSnapshot @entity {
   deiRedeemRatio: BigDecimal!
   snapshots: [DEIRatioSnapshot!]!
 }
+
+type LatestDEISupplySnapshot @entity {
+  id: ID!
+  deiSupply: BigDecimal!
+}
+
+type DEISupplySnapshot @entity {
+  id: ID!
+  block: BigInt!
+  hash: Bytes!
+  timestamp: BigInt!
+  deiSupply: BigDecimal!
+}
+
+type HourlyDEISupplySnapshot @entity {
+  id: ID!
+  timestamp: BigInt!
+  deiSupply: BigDecimal!
+  snapshots: [DEISupplySnapshot!]!
+}
+
+type DailyDEISupplySnapshot @entity {
+  id: ID!
+  timestamp: BigInt!
+  deiSupply: BigDecimal!
+  snapshots: [DEISupplySnapshot!]!
+}

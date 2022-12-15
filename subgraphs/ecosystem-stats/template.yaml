@@ -15,7 +15,7 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
-      file: ./src/mapping.ts
+      file: ./src/mapping/index.ts
       entities:
         - LatestDEIRatioSnapshot
         - DEIRatioSnapshot
@@ -27,3 +27,26 @@ dataSources:
       eventHandlers:
         - event: SetRedeemCollateralRatio(uint256,uint256)
           handler: handleSetRedeemCollateralRatio
+  - kind: ethereum/contract
+    name: DEIStablecoin
+    network: '{{ network }}'
+    source:
+      address: '{{ deiStablecoin }}'
+      abi: DEIStablecoin
+      startBlock: {{deiStablecoinStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mapping/index.ts
+      entities:
+        - LatestDEISupplySnapshot
+        - DEISupplySnapshot
+        - HourlyDEISupplySnapshot
+        - DailyDEISupplySnapshot
+      abis:
+        - name: DEIStablecoin
+          file: ./abis/DEIStablecoin.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleDeiTransfer

@@ -1,6 +1,10 @@
-import {SetRedeemCollateralRatio} from '../generated/DEIStrategy/DEIStrategy'
-import {createDEIRatioSnapshot, updateDailyDEIRatioSnapshot, updateHourlyDEIRatioSnapshot} from './entities'
-import {updateLatestDeiRatioSnapshot} from './entities/LatestDEIRatioSnapshot'
+import {SetRedeemCollateralRatio} from '../../generated/DEIStrategy/DEIStrategy'
+import {
+  createDEIRatioSnapshot,
+  updateDailyDEIRatioSnapshot,
+  updateHourlyDEIRatioSnapshot,
+  updateLatestDeiRatioSnapshot,
+} from '../entities'
 
 export function handleSetRedeemCollateralRatio(event: SetRedeemCollateralRatio): void {
   // Create a Snapshot

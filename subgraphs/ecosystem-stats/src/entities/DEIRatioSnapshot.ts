@@ -1,5 +1,5 @@
 import {BigDecimal, BigInt, ethereum} from '@graphprotocol/graph-ts'
-import {SCALE} from 'const'
+import {BIG_INT_FOUR} from 'const'
 
 import {DEI_STRATEGY} from '../../constants'
 import {DEIStrategy} from '../../generated/DEIStrategy/DEIStrategy'
@@ -15,8 +15,8 @@ export function createDEIRatioSnapshot(event: ethereum.Event): DEIRatioSnapshot 
   snapshot.block = event.block.number
   snapshot.hash = event.transaction.hash
   snapshot.timestamp = event.block.timestamp
-  snapshot.deiMintingRatio = convertDecimalFromWei(deiMintingRatio, SCALE)
-  snapshot.deiRedeemRatio = convertDecimalFromWei(deiRedeemRatio, SCALE)
+  snapshot.deiMintingRatio = convertDecimalFromWei(deiMintingRatio, BIG_INT_FOUR)
+  snapshot.deiRedeemRatio = convertDecimalFromWei(deiRedeemRatio, BIG_INT_FOUR)
   snapshot.save()
 
   return snapshot
