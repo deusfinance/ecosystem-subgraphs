@@ -10,5 +10,8 @@
   "reserves4Address": "0xFb05aedf0caC43C6ce291D2d1be1eab568D155B4",
   "collateralPoolAddress": "0x6E0098A8c651F7A6A9510B270CD02c858C344D94",
   "deusAddress": "0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44",
-  "deusStartBlock": "29044141"
+  "deusStartBlock": "29044141",
+  "anyDEIAddress": "0xbB8B2F05A88108F7e9227b954358110c20e97E26",
+  "deusMultiSigAddress": "0xEf6b0872CfDF881Cf9Fe0918D3FA979c616AF983",
+  "anyDEIStartBlock": "49063348"
 }

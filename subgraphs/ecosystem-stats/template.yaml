@@ -49,6 +49,8 @@ dataSources:
           file: ./abis/DEIStablecoin.json
         - name: USDC
           file: ./abis/USDC.json
+        - name: AnyDEI
+          file: ./abis/AnyswapV6ERC20.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleDeiTransfer

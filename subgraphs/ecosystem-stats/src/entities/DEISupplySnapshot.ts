@@ -3,11 +3,14 @@ import {BIG_DECIMAL_HUNDRED, BIG_DECIMAL_ZERO, SCALE, USDC_DECIMALS} from 'const
 
 import {
   DEI_STABLECOIN,
+  DEUS_MULTISIG_ADDRESS,
   USDC_ADDRESS,
   USDC_COLLATERAL_POOL_ADDRESS,
   USDC_RESERVES_3_ADDRESS,
   USDC_RESERVES_4_ADDRESS,
 } from '../../constants'
+import {ANY_DEI_ADDRESS} from '../../constants/template'
+import {AnyDEI} from '../../generated/DEIStablecoin/AnyDEI'
 import {DEIStablecoin} from '../../generated/DEIStablecoin/DEIStablecoin'
 import {USDC} from '../../generated/DEIStablecoin/USDC'
 import {DEISupplySnapshot, HourlyDEISupplySnapshot, DailyDEISupplySnapshot} from '../../generated/schema'
@@ -78,7 +81,13 @@ function getDailyDEISupplySnapshot(timestamp: BigInt): DailyDEISupplySnapshot {
 
 function fetchDeiSupply(): BigDecimal {
   const contract = DEIStablecoin.bind(DEI_STABLECOIN)
-  return convertDecimalFromWei(contract.totalSupply().toBigDecimal(), SCALE)
+  const anyDeiContract = AnyDEI.bind(ANY_DEI_ADDRESS)
+  const anyDEI = anyDeiContract.balanceOf(DEUS_MULTISIG_ADDRESS).toBigDecimal()
+  const totalSupply = contract.totalSupply().toBigDecimal()
+
+  const supply = totalSupply.minus(anyDEI)
+
+  return convertDecimalFromWei(supply, SCALE)
 }
 
 function fetchUSDCReserves(): BigDecimal {

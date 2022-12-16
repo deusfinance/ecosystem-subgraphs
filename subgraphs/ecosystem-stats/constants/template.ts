@@ -7,3 +7,5 @@ export const USDC_RESERVES_3_ADDRESS: Address = Address.fromString('{{ reserves3
 export const USDC_RESERVES_4_ADDRESS: Address = Address.fromString('{{ reserves4Address }}')
 export const USDC_COLLATERAL_POOL_ADDRESS: Address = Address.fromString('{{ collateralPoolAddress }}')
 export const DEUS_ADDRESS: Address = Address.fromString('{{ deusAddress }}')
+export const ANY_DEI_ADDRESS: Address = Address.fromString('{{ anyDEIAddress }}')
+export const DEUS_MULTISIG_ADDRESS: Address = Address.fromString('{{ deusMultiSigAddress }}')
