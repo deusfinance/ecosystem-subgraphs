@@ -63,3 +63,30 @@ type DailyDEISupplySnapshot @entity {
   totalUSDCReserves: BigDecimal!
   snapshots: [DEISupplySnapshot!]!
 }
+
+type LatestDEUSSupplySnapshot @entity {
+  id: ID!
+  deusSupply: BigDecimal!
+}
+
+type DEUSSupplySnapshot @entity {
+  id: ID!
+  block: BigInt!
+  hash: Bytes!
+  timestamp: BigInt!
+  deusSupply: BigDecimal!
+}
+
+type HourlyDEUSSupplySnapshot @entity {
+  id: ID!
+  timestamp: BigInt!
+  deusSupply: BigDecimal!
+  snapshots: [DEUSSupplySnapshot!]!
+}
+
+type DailyDEUSSupplySnapshot @entity {
+  id: ID!
+  timestamp: BigInt!
+  deusSupply: BigDecimal!
+  snapshots: [DEUSSupplySnapshot!]!
+}

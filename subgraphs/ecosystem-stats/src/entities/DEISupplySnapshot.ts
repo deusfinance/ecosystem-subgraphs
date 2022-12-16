@@ -24,7 +24,7 @@ export function createDEISupplySnapshot(event: ethereum.Event): DEISupplySnapsho
   snapshot.timestamp = event.block.timestamp
   snapshot.deiSupply = deiSupply
   snapshot.totalUSDCReserves = totalUSDCReserves
-  snapshot.collaterizationRatio = calculateRatio(deiSupply, totalUSDCReserves).times(BIG_DECIMAL_HUNDRED)
+  snapshot.collaterizationRatio = calculateRatio(totalUSDCReserves, deiSupply).times(BIG_DECIMAL_HUNDRED)
   snapshot.save()
 
   return snapshot
