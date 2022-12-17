@@ -1,4 +1,4 @@
-import {BigDecimal, BigInt, ethereum} from '@graphprotocol/graph-ts'
+import {BigDecimal, BigInt, ethereum, log} from '@graphprotocol/graph-ts'
 import {BIG_DECIMAL_HUNDRED, BIG_DECIMAL_ZERO, SCALE, USDC_DECIMALS} from 'const'
 
 import {
@@ -9,8 +9,8 @@ import {
   USDC_RESERVES_3_ADDRESS,
   USDC_RESERVES_4_ADDRESS,
 } from '../../constants'
-import {ANY_DEI_ADDRESS} from '../../constants/template'
-import {AnyDEI} from '../../generated/DEIStablecoin/AnyDEI'
+import {ANY_DEI_ADDRESS} from '../../constants'
+import {AnyswapV6ERC20} from '../../generated/DEIStablecoin/AnyswapV6ERC20'
 import {DEIStablecoin} from '../../generated/DEIStablecoin/DEIStablecoin'
 import {USDC} from '../../generated/DEIStablecoin/USDC'
 import {DEISupplySnapshot, HourlyDEISupplySnapshot, DailyDEISupplySnapshot} from '../../generated/schema'
@@ -81,8 +81,14 @@ function getDailyDEISupplySnapshot(timestamp: BigInt): DailyDEISupplySnapshot {
 
 function fetchDeiSupply(): BigDecimal {
   const contract = DEIStablecoin.bind(DEI_STABLECOIN)
-  const anyDeiContract = AnyDEI.bind(ANY_DEI_ADDRESS)
-  const anyDEI = anyDeiContract.balanceOf(DEUS_MULTISIG_ADDRESS).toBigDecimal()
+  const anyDeiContract = AnyswapV6ERC20.bind(ANY_DEI_ADDRESS)
+  const callResult = anyDeiContract.try_balanceOf(DEUS_MULTISIG_ADDRESS)
+  let anyDEI = BIG_DECIMAL_ZERO
+  if (callResult.reverted) {
+    log.info('try_balanceOf reverted', [])
+  } else {
+    anyDEI = anyDeiContract.balanceOf(DEUS_MULTISIG_ADDRESS).toBigDecimal()
+  }
   const totalSupply = contract.totalSupply().toBigDecimal()
 
   const supply = totalSupply.minus(anyDEI)
