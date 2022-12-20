@@ -19,6 +19,7 @@ type Snapshot @entity {
 
 type HourlySnapshot @entity {
   id: ID!
+  timestamp: BigInt!
   totalReserve: BigDecimal!
   totalSupply: BigDecimal!
   priceShare: BigDecimal!
@@ -28,6 +29,7 @@ type HourlySnapshot @entity {
 
 type DailySnapshot @entity {
   id: ID!
+  timestamp: BigInt!
   totalReserve: BigDecimal!
   totalSupply: BigDecimal!
   priceShare: BigDecimal!
