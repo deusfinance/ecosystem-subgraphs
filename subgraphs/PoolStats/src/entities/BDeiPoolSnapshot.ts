@@ -43,6 +43,7 @@ function getBDeiPoolHourlySnapshot(timestamp: BigInt): BDeiPoolHourlySnapshot {
   let hourlySnapshot = BDeiPoolHourlySnapshot.load(hourlyId)
   if (!hourlySnapshot) {
     hourlySnapshot = new BDeiPoolHourlySnapshot(hourlyId)
+    hourlySnapshot.timestamp = timestamp
   }
   return hourlySnapshot
 }
@@ -66,6 +67,7 @@ function getBDeiPoolDailySnapshot(timestamp: BigInt): BDeiPoolDailySnapshot {
   let dailySnapshot = BDeiPoolDailySnapshot.load(dailyId)
   if (!dailySnapshot) {
     dailySnapshot = new BDeiPoolDailySnapshot(dailyId)
+    dailySnapshot.timestamp = timestamp
   }
   return dailySnapshot
 }

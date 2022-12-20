@@ -43,6 +43,7 @@ function getVDeusPoolHourlySnapshot(timestamp: BigInt): VDeusPoolHourlySnapshot 
   let hourlySnapshot = VDeusPoolHourlySnapshot.load(hourlyId)
   if (!hourlySnapshot) {
     hourlySnapshot = new VDeusPoolHourlySnapshot(hourlyId)
+    hourlySnapshot.timestamp = timestamp
   }
   return hourlySnapshot
 }
@@ -66,6 +67,7 @@ function getVDeusPoolDailySnapshot(timestamp: BigInt): VDeusPoolDailySnapshot {
   let dailySnapshot = VDeusPoolDailySnapshot.load(dailyId)
   if (!dailySnapshot) {
     dailySnapshot = new VDeusPoolDailySnapshot(dailyId)
+    dailySnapshot.timestamp = timestamp
   }
   return dailySnapshot
 }
