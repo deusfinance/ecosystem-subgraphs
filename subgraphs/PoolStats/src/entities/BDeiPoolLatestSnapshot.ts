@@ -8,6 +8,7 @@ export function updateLatestBDeiPool(snapshot: BDeiPoolSnapshot): void {
   latest.deiBalance = snapshot.deiBalance
   latest.bDeiPerDei = snapshot.bDeiPerDei
   latest.deiPerBDei = snapshot.deiPerBDei
+  latest.swapRatio = snapshot.swapRatio
   latest.save()
 }
 

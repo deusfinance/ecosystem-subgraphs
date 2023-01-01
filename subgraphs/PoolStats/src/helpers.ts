@@ -9,6 +9,14 @@ export function exponentToBigDecimal(decimals: BigInt): BigDecimal {
   return bd
 }
 
+export function exponentToBigInt(decimals: BigInt): BigInt {
+  let bd = BigInt.fromString('1')
+  for (let i = BIG_INT_ZERO; i.lt(decimals as BigInt); i = i.plus(BIG_INT_ONE)) {
+    bd = bd.times(BigInt.fromString('10'))
+  }
+  return bd
+}
+
 export function convertDecimalFromWei(amount: BigDecimal, decimals: BigInt): BigDecimal {
   return amount.div(exponentToBigDecimal(decimals))
 }

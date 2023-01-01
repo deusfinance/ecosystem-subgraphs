@@ -4,12 +4,13 @@ import {DEUS_TOKEN_INDEX, VDEUS_POOL_FACTORY_ADDRESS, VDEUS_TOKEN_INDEX} from '.
 
 import {VDeusPoolSnapshot, VDeusPoolHourlySnapshot, VDeusPoolDailySnapshot} from '../../generated/schema'
 import {SwapFlashLoan} from '../../generated/vDeusPoolFactory/SwapFlashLoan'
-import {convertDecimalFromWei} from '../helpers'
+import {convertDecimalFromWei, exponentToBigInt} from '../helpers'
 
 export function createVdeusPoolSnapshot(event: ethereum.Event): VDeusPoolSnapshot {
   const id = `${event.transaction.hash.toHexString()}-${event.logIndex.toString()}`
   const vDeusBalance = fetchVdeusBalance()
   const deusBalance = fetchDeusBalance()
+  const swapRatio = fetchSwapRatio()
 
   const snapshot = new VDeusPoolSnapshot(id)
   snapshot.block = event.block.number
@@ -19,6 +20,7 @@ export function createVdeusPoolSnapshot(event: ethereum.Event): VDeusPoolSnapsho
   snapshot.deusBalance = convertDecimalFromWei(deusBalance, SCALE)
   snapshot.vDeusPerDeus = calculateRatio(vDeusBalance, deusBalance)
   snapshot.deusPerVDeus = calculateRatio(deusBalance, vDeusBalance)
+  snapshot.swapRatio = convertDecimalFromWei(swapRatio, SCALE)
   snapshot.save()
 
   return snapshot
@@ -30,6 +32,7 @@ export function updateVDeusPoolHourlySnapshot(snapshot: VDeusPoolSnapshot): void
   hourlySnapshot.deusBalance = snapshot.deusBalance
   hourlySnapshot.vDeusPerDeus = snapshot.vDeusPerDeus
   hourlySnapshot.deusPerVDeus = snapshot.deusPerVDeus
+  hourlySnapshot.swapRatio = snapshot.swapRatio
 
   const snapshots = hourlySnapshot.snapshots
   snapshots.push(snapshot.id)
@@ -54,6 +57,7 @@ export function updateVDeusPoolDailySnapshot(snapshot: VDeusPoolSnapshot): void 
   dailySnapshot.deusBalance = snapshot.deusBalance
   dailySnapshot.vDeusPerDeus = snapshot.vDeusPerDeus
   dailySnapshot.deusPerVDeus = snapshot.deusPerVDeus
+  dailySnapshot.swapRatio = snapshot.swapRatio
 
   const snapshots = dailySnapshot.snapshots
   snapshots.push(snapshot.id)
@@ -80,6 +84,11 @@ function fetchVdeusBalance(): BigDecimal {
 function fetchDeusBalance(): BigDecimal {
   const contract = SwapFlashLoan.bind(VDEUS_POOL_FACTORY_ADDRESS)
   return contract.getTokenBalance(DEUS_TOKEN_INDEX).toBigDecimal()
+}
+
+function fetchSwapRatio(): BigDecimal {
+  const contract = SwapFlashLoan.bind(VDEUS_POOL_FACTORY_ADDRESS)
+  return contract.calculateSwap(VDEUS_TOKEN_INDEX, DEUS_TOKEN_INDEX, exponentToBigInt(SCALE)).toBigDecimal()
 }
 
 function calculateRatio(a: BigDecimal, b: BigDecimal): BigDecimal {
