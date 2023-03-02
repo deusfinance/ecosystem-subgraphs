@@ -1,0 +1,16 @@
+{
+  "name": "poolstats",
+  "private": true,
+  "license": "MIT",
+  "version": "1.0.0",
+  "author": "deusfinance",
+  "scripts": {
+    "codegen": "graph codegen --output-dir ./generated/",
+    "build": "graph build",
+    "create-local": "graph create --node http://localhost:8020/ /deusfinance/deiPriceStats",
+    "remove-local": "graph remove --node http://localhost:8020/ /deusfinance/deiPriceStats",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 /deusfinance/deiPriceStats",
+    "deploy:fantom": "graph deploy --access-token 397504bea9174a90a715232975b55d15 shadowcrypto1/dei-price-stats --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ --debug",
+    "prepare:fantom": "mustache ./config/fantom.json template.yaml > subgraph.yaml && mustache ./config/fantom.json ./constants/template.ts > ./constants/index.ts"
+  }
+}
