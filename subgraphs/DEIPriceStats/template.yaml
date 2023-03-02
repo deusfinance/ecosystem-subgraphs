@@ -1,6 +1,6 @@
 specVersion: 0.0.4
 description: Analytics for the Prices.
-repository: https://github.com/deusfinance/ecosystem-subgraphs/tree/main/subgraphs/PoolStats
+repository: https://github.com/deusfinance/ecosystem-subgraphs/tree/main/subgraphs/DEIPriceStats
 schema:
   file: ./schema.graphql
 dataSources:
@@ -13,18 +13,15 @@ dataSources:
       startBlock: {{vaultStartBlock}}
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.5
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ./src/mapping/index.ts
       entities:
-        - Pool
-        - PoolToken
-        - Token
+        - DeiTokenPriceSnapshot
+        - LatestDeiTokenPriceSnapshot
       abis:
         - name: Vault
           file: ./abis/Vault.json
-        - name: StablePool
-          file: ./abis/StablePool.json
       eventHandlers:
         - event: Swap(indexed bytes32,indexed address,indexed address,uint256,uint256)
           handler: handleSwapEvent

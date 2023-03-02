@@ -25,3 +25,23 @@ type LatestDeiTokenPriceSnapshot @entity {
   amountIn: BigDecimal!
   amountOut: BigDecimal!
 }
+
+type HourlyDeiTokenPriceSnapshot @entity {
+  id: ID!
+  poolId: Bytes!
+  txHash: Bytes!
+  block: BigInt!
+  timestamp: BigInt!
+  deiPrice: BigDecimal!
+  snapshots: [DeiTokenPriceSnapshot!]!
+}
+
+type DailyDeiTokenPriceSnapshot @entity {
+  id: ID!
+  poolId: Bytes!
+  txHash: Bytes!
+  block: BigInt!
+  timestamp: BigInt!
+  deiPrice: BigDecimal!
+  snapshots: [DeiTokenPriceSnapshot!]!
+}
