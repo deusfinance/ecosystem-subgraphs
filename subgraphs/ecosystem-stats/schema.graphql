@@ -1,0 +1,92 @@
+type LatestDEIRatioSnapshot @entity {
+  id: ID!
+  deiMintingRatio: BigDecimal!
+  deiRedeemRatio: BigDecimal!
+}
+
+type DEIRatioSnapshot @entity {
+  id: ID!
+  block: BigInt!
+  hash: Bytes!
+  timestamp: BigInt!
+  deiMintingRatio: BigDecimal!
+  deiRedeemRatio: BigDecimal!
+}
+
+type HourlyDEIRatioSnapshot @entity {
+  id: ID!
+  timestamp: BigInt!
+  deiMintingRatio: BigDecimal!
+  deiRedeemRatio: BigDecimal!
+  snapshots: [DEIRatioSnapshot!]!
+}
+
+type DailyDEIRatioSnapshot @entity {
+  id: ID!
+  timestamp: BigInt!
+  deiMintingRatio: BigDecimal!
+  deiRedeemRatio: BigDecimal!
+  snapshots: [DEIRatioSnapshot!]!
+}
+
+type LatestDEISupplySnapshot @entity {
+  id: ID!
+  deiSupply: BigDecimal!
+  collaterizationRatio: BigDecimal!
+  totalUSDCReserves: BigDecimal!
+}
+
+type DEISupplySnapshot @entity {
+  id: ID!
+  block: BigInt!
+  hash: Bytes!
+  timestamp: BigInt!
+  collaterizationRatio: BigDecimal!
+  totalUSDCReserves: BigDecimal!
+  deiSupply: BigDecimal!
+}
+
+type HourlyDEISupplySnapshot @entity {
+  id: ID!
+  timestamp: BigInt!
+  deiSupply: BigDecimal!
+  collaterizationRatio: BigDecimal!
+  totalUSDCReserves: BigDecimal!
+  snapshots: [DEISupplySnapshot!]!
+}
+
+type DailyDEISupplySnapshot @entity {
+  id: ID!
+  timestamp: BigInt!
+  deiSupply: BigDecimal!
+  collaterizationRatio: BigDecimal!
+  totalUSDCReserves: BigDecimal!
+  snapshots: [DEISupplySnapshot!]!
+}
+
+type LatestDEUSSupplySnapshot @entity {
+  id: ID!
+  deusSupply: BigDecimal!
+}
+
+type DEUSSupplySnapshot @entity {
+  id: ID!
+  block: BigInt!
+  hash: Bytes!
+  timestamp: BigInt!
+  deusSupply: BigDecimal!
+}
+
+type HourlyDEUSSupplySnapshot @entity {
+  id: ID!
+  timestamp: BigInt!
+  deusSupply: BigDecimal!
+  snapshots: [DEUSSupplySnapshot!]!
+}
+
+type DailyDEUSSupplySnapshot @entity {
+  id: ID!
+  timestamp: BigInt!
+  deusSupply: BigDecimal!
+  snapshots: [DEUSSupplySnapshot!]!
+}
