@@ -8,6 +8,7 @@ export function updateLatestVdeusPool(snapshot: VDeusPoolSnapshot): void {
   latest.deusBalance = snapshot.deusBalance
   latest.vDeusPerDeus = snapshot.vDeusPerDeus
   latest.deusPerVDeus = snapshot.deusPerVDeus
+  latest.swapRatio = snapshot.swapRatio
   latest.save()
 }
 

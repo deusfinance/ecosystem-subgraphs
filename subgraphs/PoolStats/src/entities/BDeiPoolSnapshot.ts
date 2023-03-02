@@ -1,5 +1,5 @@
 import {BigDecimal, BigInt, ethereum} from '@graphprotocol/graph-ts'
-import {BIG_DECIMAL_ZERO, SCALE} from 'const'
+import {BIG_DECIMAL_ZERO, BIG_INT_ONE, SCALE} from 'const'
 import {BDEI_POOL_FACTORY_ADDRESS, BDEI_TOKEN_INDEX, DEI_TOKEN_INDEX} from '../../constants'
 import {SwapFlashLoan} from '../../generated/bDeiPoolFactory/SwapFlashLoan'
 
@@ -10,6 +10,7 @@ export function createBDeiPoolSnapshot(event: ethereum.Event): BDeiPoolSnapshot 
   const id = `${event.transaction.hash.toHexString()}-${event.logIndex.toString()}`
   const bDeiBalance = fetchBDeiBalance()
   const deiBalance = fetchDeiBalance()
+  const swapRatio = fetchSwapRatio()
 
   const snapshot = new BDeiPoolSnapshot(id)
   snapshot.block = event.block.number
@@ -19,6 +20,7 @@ export function createBDeiPoolSnapshot(event: ethereum.Event): BDeiPoolSnapshot 
   snapshot.deiBalance = convertDecimalFromWei(deiBalance, SCALE)
   snapshot.bDeiPerDei = calculateRatio(bDeiBalance, deiBalance)
   snapshot.deiPerBDei = calculateRatio(deiBalance, bDeiBalance)
+  snapshot.swapRatio = convertDecimalFromWei(swapRatio, SCALE)
   snapshot.save()
 
   return snapshot
@@ -30,6 +32,7 @@ export function updateBDeiPoolHourlySnapshot(snapshot: BDeiPoolSnapshot): void {
   hourlySnapshot.deiBalance = snapshot.deiBalance
   hourlySnapshot.bDeiPerDei = snapshot.bDeiPerDei
   hourlySnapshot.deiPerBDei = snapshot.deiPerBDei
+  hourlySnapshot.swapRatio = snapshot.swapRatio
 
   const snapshots = hourlySnapshot.snapshots
   snapshots.push(snapshot.id)
@@ -54,6 +57,7 @@ export function updateBDeiPoolDailySnapshot(snapshot: BDeiPoolSnapshot): void {
   dailySnapshot.deiBalance = snapshot.deiBalance
   dailySnapshot.bDeiPerDei = snapshot.bDeiPerDei
   dailySnapshot.deiPerBDei = snapshot.deiPerBDei
+  dailySnapshot.swapRatio = snapshot.swapRatio
 
   const snapshots = dailySnapshot.snapshots
   snapshots.push(snapshot.id)
@@ -80,6 +84,11 @@ function fetchBDeiBalance(): BigDecimal {
 function fetchDeiBalance(): BigDecimal {
   const contract = SwapFlashLoan.bind(BDEI_POOL_FACTORY_ADDRESS)
   return contract.getTokenBalance(DEI_TOKEN_INDEX).toBigDecimal()
+}
+
+function fetchSwapRatio(): BigDecimal {
+  const contract = SwapFlashLoan.bind(BDEI_POOL_FACTORY_ADDRESS)
+  return contract.calculateSwap(BDEI_TOKEN_INDEX, DEI_TOKEN_INDEX, BIG_INT_ONE).toBigDecimal()
 }
 
 function calculateRatio(a: BigDecimal, b: BigDecimal): BigDecimal {
