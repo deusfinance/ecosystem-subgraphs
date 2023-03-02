@@ -1,0 +1,27 @@
+type DeiTokenPriceSnapshot @entity {
+  id: ID!
+  poolId: Bytes!
+  txHash: Bytes!
+  block: BigInt!
+  timestamp: BigInt!
+  deiPrice: BigDecimal!
+  tokenIn: String!
+  tokenOut: String!
+  swapType: String!
+  amountIn: BigDecimal!
+  amountOut: BigDecimal!
+}
+
+type LatestDeiTokenPriceSnapshot @entity {
+  id: ID!
+  poolId: Bytes!
+  txHash: Bytes!
+  block: BigInt!
+  timestamp: BigInt!
+  deiPrice: BigDecimal!
+  tokenIn: String!
+  tokenOut: String!
+  swapType: String!
+  amountIn: BigDecimal!
+  amountOut: BigDecimal!
+}
