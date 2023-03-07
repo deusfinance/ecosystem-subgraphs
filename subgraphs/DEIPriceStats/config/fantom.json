@@ -1,8 +1,0 @@
-{
-  "network": "fantom",
-  "chainId": "250",
-  "vaultAddress": "0x20dd72Ed959b6147912C2e529F0a0C651c33c9ce",
-  "vaultStartBlock": "45189200",
-  "usdcTokenAddress": "0x04068da6c83afcfa0e13ba15a6696662335d5b75",
-  "deiTokenAddress": "0xde1e704dae0b4051e80dabb26ab6ad6c12262da0"
-}

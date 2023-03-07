@@ -1,5 +1,10 @@
 import {Swap} from '../../generated/Vault/Vault'
-import {createDeiTokenPriceSnapshot, updateLatestDeiTokenPriceSnapshot} from '../entities'
+import {
+  createDeiTokenPriceSnapshot,
+  updateDailyDEITokenPriceSnapshot,
+  updateHourlyDEITokenPriceSnapshot,
+  updateLatestDeiTokenPriceSnapshot,
+} from '../entities'
 
 const ANOTHER_DOLLAR_ANOTHER_DEI_POOL_ID = '0x4e415957aa4fd703ad701e43ee5335d1d7891d8300020000000000000000053b'
 
@@ -14,4 +19,8 @@ export function handleSwapEvent(event: Swap): void {
 
   // Update Latest entity
   updateLatestDeiTokenPriceSnapshot(snapshot)
+
+  // Aggregate Snapshot into chunks
+  updateHourlyDEITokenPriceSnapshot(snapshot)
+  updateDailyDEITokenPriceSnapshot(snapshot)
 }

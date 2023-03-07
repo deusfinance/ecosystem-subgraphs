@@ -9,3 +9,5 @@ export const USDC_COLLATERAL_POOL_ADDRESS: Address = Address.fromString('{{ coll
 export const DEUS_ADDRESS: Address = Address.fromString('{{ deusAddress }}')
 export const ANY_DEI_ADDRESS: Address = Address.fromString('{{ anyDEIAddress }}')
 export const DEUS_MULTISIG_ADDRESS: Address = Address.fromString('{{ deusMultiSigAddress }}')
+export const USDC_TOKEN_ADDRESS = '{{ usdcTokenAddress }}'
+export const DEI_TOKEN_ADDRESS = '{{ deiTokenAddress }}'

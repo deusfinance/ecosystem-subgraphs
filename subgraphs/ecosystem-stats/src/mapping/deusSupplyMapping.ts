@@ -1,4 +1,4 @@
-import {DEUSMinted} from '../../generated/DEUSToken/DEUSToken'
+import {DEUSBurned, DEUSMinted} from '../../generated/DEUSToken/DEUSToken'
 import {
   createDEUSSupplySnapshot,
   updateDailyDEUSSupplySnapshot,
@@ -13,12 +13,12 @@ export function handleDeusMinted(event: DEUSMinted): void {
   // Update Latest entity
   updateLatestDeusSupplySnapshot(snapshot)
 
-  // Aggregate Snapshot into chunks
+  // // Aggregate Snapshot into chunks
   updateHourlyDEUSSupplySnapshot(snapshot)
   updateDailyDEUSSupplySnapshot(snapshot)
 }
 
-export function handleDeusBurned(event: DEUSMinted): void {
+export function handleDeusBurned(event: DEUSBurned): void {
   // Create a Snapshot
   const snapshot = createDEUSSupplySnapshot(event)
 

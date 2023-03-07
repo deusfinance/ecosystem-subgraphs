@@ -9,3 +9,5 @@ export const USDC_COLLATERAL_POOL_ADDRESS: Address = Address.fromString('0x6E009
 export const DEUS_ADDRESS: Address = Address.fromString('0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44')
 export const ANY_DEI_ADDRESS: Address = Address.fromString('0xbB8B2F05A88108F7e9227b954358110c20e97E26')
 export const DEUS_MULTISIG_ADDRESS: Address = Address.fromString('0xEf6b0872CfDF881Cf9Fe0918D3FA979c616AF983')
+export const USDC_TOKEN_ADDRESS = '0x04068da6c83afcfa0e13ba15a6696662335d5b75'
+export const DEI_TOKEN_ADDRESS = '0xde1e704dae0b4051e80dabb26ab6ad6c12262da0'

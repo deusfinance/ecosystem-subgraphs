@@ -79,3 +79,26 @@ dataSources:
           handler: handleDeusMinted
         - event: DEUSBurned(indexed address,indexed address,uint256)
           handler: handleDeusBurned
+  - kind: ethereum/contract
+    name: Vault
+    network: '{{ network }}'
+    source:
+      address: '{{vaultAddress}}'
+      abi: Vault
+      startBlock: {{vaultStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mapping/index.ts
+      entities:
+        - DeiTokenPriceSnapshot
+        - LatestDeiTokenPriceSnapshot
+        - HourlyDeiTokenPriceSnapshot
+        - DailyDeiTokenPriceSnapshot
+      abis:
+        - name: Vault
+          file: ./abis/Vault.json
+      eventHandlers:
+        - event: Swap(indexed bytes32,indexed address,indexed address,uint256,uint256)
+          handler: handleSwapEvent
