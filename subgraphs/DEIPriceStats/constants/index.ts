@@ -1,2 +1,0 @@
-export const USDC_TOKEN_ADDRESS = '0x04068da6c83afcfa0e13ba15a6696662335d5b75'
-export const DEI_TOKEN_ADDRESS = '0xde1e704dae0b4051e80dabb26ab6ad6c12262da0'
