@@ -1,4 +1,4 @@
-import {BigDecimal, BigInt, ethereum} from '@graphprotocol/graph-ts'
+import {BigDecimal, BigInt, ethereum, log} from '@graphprotocol/graph-ts'
 import {SCALE} from 'const'
 
 import {DEUS_ADDRESS} from '../../constants'
@@ -8,6 +8,7 @@ import {convertDecimalFromWei} from '../helpers'
 
 export function createDEUSSupplySnapshot(event: ethereum.Event): DEUSSupplySnapshot {
   const id = `${event.transaction.hash.toHexString()}-${event.logIndex.toString()}`
+  log.info('ID is', [id])
   const deusSupply = fetchDeusSupply()
 
   const snapshot = new DEUSSupplySnapshot(id)
@@ -24,9 +25,9 @@ export function updateHourlyDEUSSupplySnapshot(snapshot: DEUSSupplySnapshot): vo
   const hourlySnapshot = getHourlyDEUSSupplySnapshot(snapshot.timestamp)
   hourlySnapshot.deusSupply = snapshot.deusSupply
 
-  const snapshots = hourlySnapshot.snapshots
-  snapshots.push(snapshot.id)
-  hourlySnapshot.snapshots = snapshots
+  //const snapshots = hourlySnapshot.snapshots
+  //snapshots.push(snapshot.id)
+  //hourlySnapshot.snapshots = snapshots
 
   hourlySnapshot.save()
 }
@@ -45,9 +46,9 @@ export function updateDailyDEUSSupplySnapshot(snapshot: DEUSSupplySnapshot): voi
   const dailySnapshot = getDailyDEUSSupplySnapshot(snapshot.timestamp)
   dailySnapshot.deusSupply = snapshot.deusSupply
 
-  const snapshots = dailySnapshot.snapshots
-  snapshots.push(snapshot.id)
-  dailySnapshot.snapshots = snapshots
+  //const snapshots = dailySnapshot.snapshots
+  //snapshots.push(snapshot.id)
+  //dailySnapshot.snapshots = snapshots
 
   dailySnapshot.save()
 }

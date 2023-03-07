@@ -1,4 +1,4 @@
-import {BigDecimal, BigInt, ethereum, log} from '@graphprotocol/graph-ts'
+import {BigDecimal, BigInt, log} from '@graphprotocol/graph-ts'
 import {BIG_DECIMAL_HUNDRED, BIG_DECIMAL_ZERO, SCALE, USDC_DECIMALS} from 'const'
 
 import {
@@ -10,13 +10,13 @@ import {
   USDC_RESERVES_4_ADDRESS,
 } from '../../constants'
 import {ANY_DEI_ADDRESS} from '../../constants'
-import {AnyswapV6ERC20} from '../../generated/DEIStablecoin/AnyswapV6ERC20'
+import {AnyswapV6ERC20, Transfer} from '../../generated/DEIStablecoin/AnyswapV6ERC20'
 import {DEIStablecoin} from '../../generated/DEIStablecoin/DEIStablecoin'
 import {USDC} from '../../generated/DEIStablecoin/USDC'
 import {DEISupplySnapshot, HourlyDEISupplySnapshot, DailyDEISupplySnapshot} from '../../generated/schema'
 import {convertDecimalFromWei} from '../helpers'
 
-export function createDEISupplySnapshot(event: ethereum.Event): DEISupplySnapshot {
+export function createDEISupplySnapshot(event: Transfer): DEISupplySnapshot {
   const id = `${event.transaction.hash.toHexString()}-${event.logIndex.toString()}`
   const deiSupply = fetchDeiSupply()
   const totalUSDCReserves = fetchUSDCReserves()

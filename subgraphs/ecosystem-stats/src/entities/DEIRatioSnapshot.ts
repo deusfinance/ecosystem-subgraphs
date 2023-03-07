@@ -1,12 +1,12 @@
-import {BigDecimal, BigInt, ethereum} from '@graphprotocol/graph-ts'
+import {BigDecimal, BigInt} from '@graphprotocol/graph-ts'
 import {BIG_INT_FOUR} from 'const'
 
 import {DEI_STRATEGY} from '../../constants'
-import {DEIStrategy} from '../../generated/DEIStrategy/DEIStrategy'
+import {DEIStrategy, SetRedeemCollateralRatio} from '../../generated/DEIStrategy/DEIStrategy'
 import {DailyDEIRatioSnapshot, HourlyDEIRatioSnapshot, DEIRatioSnapshot} from '../../generated/schema'
 import {convertDecimalFromWei} from '../helpers'
 
-export function createDEIRatioSnapshot(event: ethereum.Event): DEIRatioSnapshot {
+export function createDEIRatioSnapshot(event: SetRedeemCollateralRatio): DEIRatioSnapshot {
   const id = `${event.transaction.hash.toHexString()}-${event.logIndex.toString()}`
   const deiMintingRatio = fetchMintingRatio()
   const deiRedeemRatio = fetchRedeemRatio()

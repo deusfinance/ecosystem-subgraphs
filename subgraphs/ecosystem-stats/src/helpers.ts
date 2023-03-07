@@ -19,3 +19,7 @@ export function convertAmountToDecimal(amount: BigInt, decimals: BigInt): BigDec
 export function convertDecimalFromWei(amount: BigDecimal, decimals: BigInt): BigDecimal {
   return amount.div(exponentToBigDecimal(decimals))
 }
+
+export function scaleDown(num: BigInt, decimals: i32): BigDecimal {
+  return num.divDecimal(BigInt.fromI32(10).pow(u8(decimals)).toBigDecimal())
+}

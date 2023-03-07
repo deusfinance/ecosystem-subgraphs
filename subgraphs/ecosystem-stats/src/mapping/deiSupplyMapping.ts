@@ -1,4 +1,4 @@
-import {Transfer} from '../../generated/DEIStablecoin/DEIStablecoin'
+import {Transfer} from '../../generated/DEIStablecoin/AnyswapV6ERC20'
 import {createDEISupplySnapshot, updateDailyDEISupplySnapshot, updateHourlyDEISupplySnapshot} from '../entities'
 import {updateLatestDeiSupplySnapshot} from '../entities/LatestDEISupplySnapshot'
 
