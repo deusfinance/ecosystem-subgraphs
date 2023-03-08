@@ -5,6 +5,8 @@ export const CHAIN_ID = '250'
 
 export const SCALE = BigInt.fromI32(18)
 
+export const USDC_DECIMALS = BigInt.fromI32(6)
+
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
 
 export const BIG_INT_ZERO = BigInt.fromI32(0)
@@ -15,3 +17,4 @@ export const BIG_INT_FOUR = BigInt.fromI32(4)
 
 export const BIG_DECIMAL_ZERO = BigDecimal.fromString('0')
 export const BIG_DECIMAL_ONE = BigDecimal.fromString('1')
+export const BIG_DECIMAL_HUNDRED = BigDecimal.fromString('100')

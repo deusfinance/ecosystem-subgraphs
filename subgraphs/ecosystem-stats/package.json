@@ -1,0 +1,16 @@
+{
+  "name": "ecosystem-stats",
+  "private": true,
+  "license": "MIT",
+  "version": "1.0.0",
+  "author": "deusfinance",
+  "scripts": {
+    "codegen": "graph codegen --output-dir ./generated/",
+    "build": "graph build",
+    "create-local": "graph create --node http://localhost:8020/ /deusfinance/ecosystem-stats",
+    "remove-local": "graph remove --node http://localhost:8020/ /deusfinance/ecosystem-stats",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 /deusfinance/ecosystem-stats",
+    "deploy:fantom": "graph deploy --access-token 397504bea9174a90a715232975b55d15 shadowcrypto1/ecosystem-stats --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/",
+    "prepare:fantom": "mustache ./config/fantom.json template.yaml > subgraph.yaml && mustache ./config/fantom.json ./constants/template.ts > ./constants/index.ts"
+  }
+}

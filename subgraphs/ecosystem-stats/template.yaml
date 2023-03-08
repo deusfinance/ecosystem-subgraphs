@@ -1,0 +1,104 @@
+specVersion: 0.0.4
+description: Deus Ecosystem Stats Subgraph
+repository: https://github.com/deusfinance/ecosystem-subgraphs/tree/main/subgraphs/ecosystem-stats
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: DEIStrategy
+    network: '{{ network }}'
+    source:
+      address: '{{ deiStrategy }}'
+      abi: DEIStrategy
+      startBlock: {{deiStrategyStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mapping/index.ts
+      entities:
+        - LatestDEIRatioSnapshot
+        - DEIRatioSnapshot
+        - HourlyDEIRatioSnapshot
+        - DailyDEIRatioSnapshot
+      abis:
+        - name: DEIStrategy
+          file: ./abis/DEIStrategy.json
+      eventHandlers:
+        - event: SetRedeemCollateralRatio(uint256,uint256)
+          handler: handleSetRedeemCollateralRatio
+  - kind: ethereum/contract
+    name: DEIStablecoin
+    network: '{{ network }}'
+    source:
+      address: '{{ deiStablecoin }}'
+      abi: DEIStablecoin
+      startBlock: {{deiStablecoinStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mapping/index.ts
+      entities:
+        - LatestDEISupplySnapshot
+        - DEISupplySnapshot
+        - HourlyDEISupplySnapshot
+        - DailyDEISupplySnapshot
+      abis:
+        - name: DEIStablecoin
+          file: ./abis/DEIStablecoin.json
+        - name: USDC
+          file: ./abis/USDC.json
+        - name: AnyswapV6ERC20
+          file: ./abis/AnyswapV6ERC20.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleDeiTransfer
+  - kind: ethereum/contract
+    name: DEUSToken
+    network: '{{ network }}'
+    source:
+      address: '{{ deusAddress }}'
+      abi: DEUSToken
+      startBlock: {{deusStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mapping/index.ts
+      entities:
+        - LatestDEUSSupplySnapshot
+        - DEUSSupplySnapshot
+        - HourlyDEUSSupplySnapshot
+        - DailyDEUSSupplySnapshot
+      abis:
+        - name: DEUSToken
+          file: ./abis/DEUSToken.json
+      eventHandlers:
+        - event: DEUSMinted(indexed address,indexed address,uint256)
+          handler: handleDeusMinted
+        - event: DEUSBurned(indexed address,indexed address,uint256)
+          handler: handleDeusBurned
+  - kind: ethereum/contract
+    name: Vault
+    network: '{{ network }}'
+    source:
+      address: '{{vaultAddress}}'
+      abi: Vault
+      startBlock: {{vaultStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mapping/index.ts
+      entities:
+        - DeiTokenPriceSnapshot
+        - LatestDeiTokenPriceSnapshot
+        - HourlyDeiTokenPriceSnapshot
+        - DailyDeiTokenPriceSnapshot
+      abis:
+        - name: Vault
+          file: ./abis/Vault.json
+      eventHandlers:
+        - event: Swap(indexed bytes32,indexed address,indexed address,uint256,uint256)
+          handler: handleSwapEvent
