@@ -15,8 +15,6 @@ export function createDeiTokenPriceSnapshot(event: Swap): DeiTokenPriceSnapshot 
 
   const tokenInAddress: Address = event.params.tokenIn
 
-  log.info('token in address in string', [tokenInAddress.toHexString()])
-
   if (tokenInAddress.toHexString() == USDC_TOKEN_ADDRESS) {
     const tokenAmountIn: BigDecimal = scaleDown(event.params.amountIn, 6)
     const tokenAmountOut: BigDecimal = scaleDown(event.params.amountOut, 18)
@@ -71,6 +69,7 @@ function getHourlyDEITokenPriceSnapshot(timestamp: BigInt): HourlyDeiTokenPriceS
   if (!hourlySnapshot) {
     hourlySnapshot = new HourlyDeiTokenPriceSnapshot(hourlyId)
     hourlySnapshot.timestamp = timestamp
+    hourlySnapshot.snapshots = []
   }
   return hourlySnapshot
 }
@@ -100,6 +99,7 @@ function getDailyDEITokenPriceSnapshot(timestamp: BigInt): DailyDeiTokenPriceSna
   if (!dailySnapshot) {
     dailySnapshot = new DailyDeiTokenPriceSnapshot(dailyId)
     dailySnapshot.timestamp = timestamp
+    dailySnapshot.snapshots = []
   }
   return dailySnapshot
 }

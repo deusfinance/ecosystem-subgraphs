@@ -40,6 +40,7 @@ function getHourlyDEIRatioSnapshot(timestamp: BigInt): HourlyDEIRatioSnapshot {
   if (!hourlySnapshot) {
     hourlySnapshot = new HourlyDEIRatioSnapshot(hourlyId)
     hourlySnapshot.timestamp = timestamp
+    hourlySnapshot.snapshots = []
   }
   return hourlySnapshot
 }
@@ -62,6 +63,7 @@ function getDailyDEIRatioSnapshot(timestamp: BigInt): DailyDEIRatioSnapshot {
   if (!dailySnapshot) {
     dailySnapshot = new DailyDEIRatioSnapshot(dailyId)
     dailySnapshot.timestamp = timestamp
+    dailySnapshot.snapshots = []
   }
   return dailySnapshot
 }
