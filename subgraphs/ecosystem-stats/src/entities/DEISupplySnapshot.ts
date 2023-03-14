@@ -52,6 +52,7 @@ function getHourlyDEISupplySnapshot(timestamp: BigInt): HourlyDEISupplySnapshot 
   if (!hourlySnapshot) {
     hourlySnapshot = new HourlyDEISupplySnapshot(hourlyId)
     hourlySnapshot.timestamp = timestamp
+    hourlySnapshot.snapshots = []
   }
   return hourlySnapshot
 }
@@ -75,6 +76,7 @@ function getDailyDEISupplySnapshot(timestamp: BigInt): DailyDEISupplySnapshot {
   if (!dailySnapshot) {
     dailySnapshot = new DailyDEISupplySnapshot(dailyId)
     dailySnapshot.timestamp = timestamp
+    dailySnapshot.snapshots = []
   }
   return dailySnapshot
 }

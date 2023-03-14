@@ -25,9 +25,9 @@ export function updateHourlyDEUSSupplySnapshot(snapshot: DEUSSupplySnapshot): vo
   const hourlySnapshot = getHourlyDEUSSupplySnapshot(snapshot.timestamp)
   hourlySnapshot.deusSupply = snapshot.deusSupply
 
-  //const snapshots = hourlySnapshot.snapshots
-  //snapshots.push(snapshot.id)
-  //hourlySnapshot.snapshots = snapshots
+  const snapshots = hourlySnapshot.snapshots
+  snapshots.push(snapshot.id)
+  hourlySnapshot.snapshots = snapshots
 
   hourlySnapshot.save()
 }
@@ -38,6 +38,7 @@ function getHourlyDEUSSupplySnapshot(timestamp: BigInt): HourlyDEUSSupplySnapsho
   if (!hourlySnapshot) {
     hourlySnapshot = new HourlyDEUSSupplySnapshot(hourlyId)
     hourlySnapshot.timestamp = timestamp
+    hourlySnapshot.snapshots = []
   }
   return hourlySnapshot
 }
@@ -46,9 +47,9 @@ export function updateDailyDEUSSupplySnapshot(snapshot: DEUSSupplySnapshot): voi
   const dailySnapshot = getDailyDEUSSupplySnapshot(snapshot.timestamp)
   dailySnapshot.deusSupply = snapshot.deusSupply
 
-  //const snapshots = dailySnapshot.snapshots
-  //snapshots.push(snapshot.id)
-  //dailySnapshot.snapshots = snapshots
+  const snapshots = dailySnapshot.snapshots
+  snapshots.push(snapshot.id)
+  dailySnapshot.snapshots = snapshots
 
   dailySnapshot.save()
 }
@@ -59,6 +60,7 @@ function getDailyDEUSSupplySnapshot(timestamp: BigInt): DailyDEUSSupplySnapshot 
   if (!dailySnapshot) {
     dailySnapshot = new DailyDEUSSupplySnapshot(dailyId)
     dailySnapshot.timestamp = timestamp
+    dailySnapshot.snapshots = []
   }
   return dailySnapshot
 }

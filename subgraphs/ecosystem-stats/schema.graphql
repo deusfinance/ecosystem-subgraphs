@@ -81,12 +81,14 @@ type HourlyDEUSSupplySnapshot @entity {
   id: ID!
   timestamp: BigInt!
   deusSupply: BigDecimal!
+  snapshots: [DEUSSupplySnapshot!]!
 }
 
 type DailyDEUSSupplySnapshot @entity {
   id: ID!
   timestamp: BigInt!
   deusSupply: BigDecimal!
+  snapshots: [DEUSSupplySnapshot!]!
 }
 
 type DeiTokenPriceSnapshot @entity {
